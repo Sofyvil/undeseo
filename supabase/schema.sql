@@ -20,6 +20,7 @@ create table store_products (
 create table lists (
   id uuid primary key default gen_random_uuid(),
   owner_token text not null default encode(gen_random_bytes(16), 'hex'), -- clave secreta del organizador (MVP sin login)
+  owner_email text not null, -- para poder recuperar el acceso si se pierde el link
   parents_name text not null,
   event_type text not null default 'baby_shower', -- baby_shower | nacimiento | cumple | otro
   event_date date,

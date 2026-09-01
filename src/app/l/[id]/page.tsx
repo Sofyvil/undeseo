@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "@/components/Icon";
+import Link from "next/link";
 import { addItemManual, reserveItem, unreserveItem, deleteItem } from "./actions";
 import { notFound } from "next/navigation";
 
@@ -61,7 +62,7 @@ export default async function ListPage({
     (process.env.NEXT_PUBLIC_SITE_URL ?? "") + `/l/${id}`;
 
   return (
-    <main className="max-w-lg mx-auto w-full px-5 py-6">
+    <main className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto w-full px-5 md:px-8 py-6 md:py-10">
       <div className="flex items-center justify-between mb-4">
         <span
           className={`font-mono-price text-[0.68rem] px-2.5 py-1 rounded-full font-semibold text-white ${
@@ -73,7 +74,7 @@ export default async function ListPage({
       </div>
 
       {/* Header de la lista */}
-      <div className="bg-white rounded-[20px] p-5 border border-line mb-5">
+      <div className="bg-white rounded-[20px] p-5 md:p-7 border border-line mb-5">
         {list.flyer_image_url && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -125,65 +126,76 @@ export default async function ListPage({
         )}
       </div>
 
-      {/* Compartir (solo organizador) */}
-      {isOwner && (
-        <div className="bg-ink text-white rounded-[20px] p-4.5 mb-5">
-          <p className="font-display font-semibold text-[1.1rem]">
-            Compartí la lista
+      {/* Banner aclaratorio para invitados: Un Deseo no es una tienda */}
+      {!isOwner && (
+        <div className="bg-cream-2 border border-line rounded-2xl px-4 py-3 mb-5 flex gap-2.5 items-start">
+          <Icon name="tag" className="w-4 h-4 text-sage-dark shrink-0 mt-0.5" />
+          <p className="text-[0.78rem] text-ink-soft leading-snug">
+            Un Deseo no es una tienda: reservar acá avisa que ya elegiste el
+            regalo, pero <strong className="text-ink">la compra se hace en la tienda original</strong>{" "}
+            (tocá &quot;Ver producto&quot; para ir). No gestionamos pagos, stock ni envíos.
           </p>
-          <p className="text-[0.85rem] text-white/60 mt-1">
-            Este link lo ven tus invitados. No pueden editar, solo elegir y
-            reservar.
-          </p>
-          <div className="bg-white/10 rounded-lg px-3 py-2.5 my-2.5 font-mono-price text-[0.75rem] break-all text-white/90">
-            {guestLink}
-          </div>
         </div>
       )}
 
-      {/* Agregar regalo (solo organizador) — versión simple, Semana 1 */}
+      {/* Compartir + Agregar regalo (solo organizador) */}
       {isOwner && (
-        <form
-          action={addItemManual.bind(null, id)}
-          className="bg-white rounded-[20px] border border-line p-4.5 mb-5 flex flex-col gap-3"
-        >
-          <p className="font-display font-semibold text-[1.05rem]">
-            Agregar un regalo
-          </p>
-          <p className="text-[0.75rem] text-ink-soft -mt-2">
-            Por ahora se carga a mano — el autocompletado de foto y precio
-            pegando un link se suma la próxima semana.
-          </p>
-          <input
-            name="name"
-            placeholder="Nombre del regalo"
-            required
-            className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
-          />
-          <div className="grid grid-cols-2 gap-2.5">
-            <input
-              name="price"
-              type="number"
-              placeholder="Precio (opcional)"
-              className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
-            />
-            <input
-              name="productUrl"
-              placeholder="Link (opcional)"
-              className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
-            />
+        <div className="md:grid md:grid-cols-2 md:gap-5 md:items-start">
+          <div className="bg-ink text-white rounded-[20px] p-4.5 mb-5">
+            <p className="font-display font-semibold text-[1.1rem]">
+              Compartí la lista
+            </p>
+            <p className="text-[0.85rem] text-white/60 mt-1">
+              Este link lo ven tus invitados. No pueden editar, solo elegir y
+              reservar.
+            </p>
+            <div className="bg-white/10 rounded-lg px-3 py-2.5 my-2.5 font-mono-price text-[0.75rem] break-all text-white/90">
+              {guestLink}
+            </div>
           </div>
-          <button
-            type="submit"
-            className="py-2.5 rounded-full bg-sage text-white font-semibold text-[0.9rem] hover:bg-sage-dark transition-colors"
+
+          <form
+            action={addItemManual.bind(null, id)}
+            className="bg-white rounded-[20px] border border-line p-4.5 mb-5 flex flex-col gap-3"
           >
-            Agregar a la lista
-          </button>
-        </form>
+            <p className="font-display font-semibold text-[1.05rem]">
+              Agregar un regalo
+            </p>
+            <p className="text-[0.75rem] text-ink-soft -mt-2">
+              Por ahora se carga a mano — el autocompletado de foto y precio
+              pegando un link se suma la próxima semana.
+            </p>
+            <input
+              name="name"
+              placeholder="Nombre del regalo"
+              required
+              className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
+            />
+            <div className="grid grid-cols-2 gap-2.5">
+              <input
+                name="price"
+                type="number"
+                placeholder="Precio (opcional)"
+                className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
+              />
+              <input
+                name="productUrl"
+                placeholder="Link (opcional)"
+                className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
+              />
+            </div>
+            <button
+              type="submit"
+              className="py-2.5 rounded-full bg-sage text-white font-semibold text-[0.9rem] hover:bg-sage-dark transition-colors"
+            >
+              Agregar a la lista
+            </button>
+          </form>
+        </div>
       )}
 
       {/* Grilla de regalos */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {total === 0 ? (
           <div className="col-span-2 text-center py-10 px-5 text-ink-soft">
             <p className="text-3xl mb-2">🎁</p>
@@ -287,10 +299,13 @@ export default async function ListPage({
       </div>
 
       <footer className="mt-8 text-center pt-4.5 border-t-2 border-dashed border-line text-[0.78rem] text-ink-soft">
-        Hecho con 💛 por{" "}
-        <a href="https://www.gobaby.com.ar" className="text-sage-dark font-semibold">
-          Go Baby
-        </a>
+        <div className="flex items-center justify-center gap-3">
+          <span>Un Deseo</span>
+          <span className="text-line">·</span>
+          <Link href="/terminos" className="underline">
+            Términos y Condiciones
+          </Link>
+        </div>
       </footer>
     </main>
   );

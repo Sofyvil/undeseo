@@ -21,7 +21,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Un Deseo — Listas de regalos, by Go Baby",
+  title: "Un Deseo — Listas de regalos",
   description:
     "Armá tu lista de regalos para baby shower, nacimiento y otros festejos. Gratis, sin vueltas, y sin repetir regalos.",
 };

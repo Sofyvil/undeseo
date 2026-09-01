@@ -1,4 +1,4 @@
-# Un Deseo — by Go Baby
+# Un Deseo
 
 Listas de regalos para baby shower, nacimiento y otros festejos.
 
@@ -13,7 +13,7 @@ Listas de regalos para baby shower, nacimiento y otros festejos.
 ## Qué falta (próximas semanas, según el plan)
 
 ⏳ Auto-completado de foto y precio al pegar un link (scraping + integración con Mercado Libre)
-⏳ Catálogo propio de Go Baby con alta rápida
+⏳ Catálogo de productos propios con alta rápida
 ⏳ Recordatorio a los 5 días + botón de WhatsApp
 ⏳ Subida de flyer del evento + link a plantillas de Canva
 ⏳ Filtro por precio
