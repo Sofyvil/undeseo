@@ -72,6 +72,25 @@ const PATHS: Record<string, React.ReactNode> = {
       <circle cx="12" cy="8.8" r="2.3" />
     </>
   ),
+  teddy: (
+    <>
+      <circle cx="7" cy="5.5" r="2" />
+      <circle cx="17" cy="5.5" r="2" />
+      <circle cx="12" cy="10" r="5" />
+      <circle cx="9.3" cy="9.3" r="0.6" fill="currentColor" stroke="none" />
+      <circle cx="14.7" cy="9.3" r="0.6" fill="currentColor" stroke="none" />
+      <path d="M10.5 11.8c.5.5 1.5.5 2 0" />
+      <path d="M8 14.5c-2.8.6-4.5 2.7-4.5 5.5h17c0-2.8-1.7-4.9-4.5-5.5-1.2 1-2.6 1.5-4 1.5s-2.8-.5-4-1.5z" />
+    </>
+  ),
+  pacifier: (
+    <>
+      <circle cx="12" cy="8" r="3.2" />
+      <path d="M8.4 10.3c-1.1 1.6-1 3.7.5 5.2 1.6 1.6 3.7 1.7 5.2.5" />
+      <circle cx="12" cy="18.2" r="1.6" />
+      <path d="M12 15.8v1" />
+    </>
+  ),
 };
 
 export function Icon({

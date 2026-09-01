@@ -3,8 +3,8 @@ import Link from "next/link";
 import { createList } from "./actions";
 
 const EVENTS = [
-  { id: "baby_shower", label: "Baby shower", icon: "balloon" as const },
-  { id: "nacimiento", label: "Nacimiento", icon: "newborn" as const },
+  { id: "baby_shower", label: "Baby shower", icon: "teddy" as const },
+  { id: "nacimiento", label: "Nacimiento", icon: "pacifier" as const },
   { id: "cumple", label: "Cumpleaños", icon: "cake" as const },
   { id: "otro", label: "Otro evento", icon: "sparkle" as const },
 ];
@@ -193,7 +193,10 @@ export default function Home() {
           ¿Ya armaste una lista y perdiste el acceso?
         </Link>
         <div className="mt-3 flex items-center justify-center gap-3">
-          <span>Un Deseo</span>
+          <span className="flex items-center gap-1.5">
+            <Icon name="gift" className="w-3.5 h-3.5 text-sage-dark" />
+            Un Deseo
+          </span>
           <span className="text-line">·</span>
           <Link href="/terminos" className="underline">
             Términos y Condiciones

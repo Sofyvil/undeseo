@@ -358,7 +358,10 @@ export default async function ListPage({
 
       <footer className="mt-8 text-center pt-4.5 border-t-2 border-dashed border-line text-[0.78rem] text-ink-soft">
         <div className="flex items-center justify-center gap-3">
-          <span>Un Deseo</span>
+          <span className="flex items-center gap-1.5">
+            <Icon name="gift" className="w-3.5 h-3.5 text-sage-dark" />
+            Un Deseo
+          </span>
           <span className="text-line">·</span>
           <Link href="/terminos" className="underline">
             Términos y Condiciones
