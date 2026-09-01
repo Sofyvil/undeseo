@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
-import { addItemManual, reserveItem, unreserveItem, deleteItem } from "./actions";
+import { reserveItem, unreserveItem, deleteItem } from "./actions";
 import { notFound } from "next/navigation";
+import { AddItemForm } from "./AddItemForm";
+import { CopyLinkButton } from "./CopyLinkButton";
 
 const EVENT_LABELS: Record<string, string> = {
   baby_shower: "Baby shower",
@@ -138,61 +140,24 @@ export default async function ListPage({
         </div>
       )}
 
-      {/* Compartir + Agregar regalo (solo organizador) */}
+      {/* Compartir (solo organizador) — barra compacta, sin competir con "Agregar regalo" */}
       {isOwner && (
-        <div className="md:grid md:grid-cols-2 md:gap-5 md:items-start">
-          <div className="bg-ink text-white rounded-[20px] p-4.5 mb-5">
-            <p className="font-display font-semibold text-[1.1rem]">
-              Compartí la lista
+        <div className="bg-forest text-white rounded-2xl px-4 py-3.5 mb-5 flex items-center gap-3">
+          <Icon name="share" className="w-4.5 h-4.5 text-white/80 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-[0.72rem] text-white/60 leading-none mb-1">
+              Link para tus invitados
             </p>
-            <p className="text-[0.85rem] text-white/60 mt-1">
-              Este link lo ven tus invitados. No pueden editar, solo elegir y
-              reservar.
-            </p>
-            <div className="bg-white/10 rounded-lg px-3 py-2.5 my-2.5 font-mono-price text-[0.75rem] break-all text-white/90">
+            <p className="font-mono-price text-[0.75rem] truncate text-white/95">
               {guestLink}
-            </div>
+            </p>
           </div>
-
-          <form
-            action={addItemManual.bind(null, id)}
-            className="bg-white rounded-[20px] border border-line p-4.5 mb-5 flex flex-col gap-3"
-          >
-            <p className="font-display font-semibold text-[1.05rem]">
-              Agregar un regalo
-            </p>
-            <p className="text-[0.75rem] text-ink-soft -mt-2">
-              Por ahora se carga a mano — el autocompletado de foto y precio
-              pegando un link se suma la próxima semana.
-            </p>
-            <input
-              name="name"
-              placeholder="Nombre del regalo"
-              required
-              className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
-            />
-            <div className="grid grid-cols-2 gap-2.5">
-              <input
-                name="price"
-                type="number"
-                placeholder="Precio (opcional)"
-                className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
-              />
-              <input
-                name="productUrl"
-                placeholder="Link (opcional)"
-                className="px-3.5 py-2.5 rounded-xl border border-line outline-none focus:border-sage text-[0.9rem]"
-              />
-            </div>
-            <button
-              type="submit"
-              className="py-2.5 rounded-full bg-sage text-white font-semibold text-[0.9rem] hover:bg-sage-dark transition-colors"
-            >
-              Agregar a la lista
-            </button>
-          </form>
+          <CopyLinkButton link={guestLink} />
         </div>
       )}
+
+      {/* Agregar regalo (solo organizador) */}
+      {isOwner && <AddItemForm listId={id} />}
 
       {/* Grilla de regalos */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">

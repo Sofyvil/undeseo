@@ -17,16 +17,16 @@ export default function TerminosPage() {
 
       <div className="flex flex-col gap-4 text-[0.92rem] text-ink-soft leading-relaxed">
         <p>
-          Un Deseo es una herramienta para armar y compartir listas de
+          &quot;Un Deseo&quot; es una herramienta para armar y compartir listas de
           regalos. Al usarla, aceptás lo siguiente:
         </p>
 
         <div>
           <p className="font-semibold text-ink mb-1">
-            Un Deseo no es una tienda
+            &quot;Un Deseo&quot; no es una tienda
           </p>
           <p>
-            Un Deseo no vende productos, no gestiona pagos, no maneja stock
+            &quot;Un Deseo&quot; no vende productos, no gestiona pagos, no maneja stock
             ni envíos. Solo agrupa, en un solo lugar, links a productos que
             se encuentran publicados en tiendas de terceros (Mercado Libre,
             tiendas online, u otras).
@@ -38,11 +38,11 @@ export default function TerminosPage() {
             La compra se hace en la tienda original
           </p>
           <p>
-            Reservar un regalo en Un Deseo no equivale a comprarlo. Quien
+            Reservar un regalo en &quot;Un Deseo&quot; no equivale a comprarlo. Quien
             regala debe ingresar al link de la tienda correspondiente y
             completar la compra ahí. El precio, la disponibilidad de stock,
             los tiempos de envío y cualquier otra condición de venta
-            dependen exclusivamente de esa tienda, no de Un Deseo.
+            dependen exclusivamente de esa tienda, no de &quot;Un Deseo&quot;.
           </p>
         </div>
 
@@ -52,9 +52,9 @@ export default function TerminosPage() {
           </p>
           <p>
             Los precios y datos de los productos pueden cambiar en cualquier
-            momento en la tienda original, sin que Un Deseo pueda
+            momento en la tienda original, sin que &quot;Un Deseo&quot; pueda
             garantizar que la información mostrada esté siempre
-            actualizada. Un Deseo no se responsabiliza por problemas de
+            actualizada. &quot;Un Deseo&quot; no se responsabiliza por problemas de
             precio, stock, calidad, envío o postventa de productos comprados
             en tiendas de terceros.
           </p>
