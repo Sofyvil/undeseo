@@ -83,43 +83,14 @@ export default async function ListPage({
         </span>
       </div>
 
-      {/* Header de la lista */}
+      {/* Header de la lista: nombre + progreso */}
       <div className="bg-white rounded-[20px] p-5 md:p-7 border border-line mb-5">
-        {list.flyer_image_url && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={list.flyer_image_url}
-            alt="Flyer del evento"
-            className="w-full rounded-xl mb-3.5 max-h-[340px] object-cover"
-          />
-        )}
         <p className="font-mono-price text-[0.68rem] tracking-[0.11em] uppercase text-sage-dark font-semibold">
           {EVENT_LABELS[list.event_type] ?? "Evento"}
         </p>
         <h1 className="font-display text-2xl font-semibold mt-1">
           {list.parents_name}
         </h1>
-
-        <div className="flex flex-col gap-1.5 mt-2.5">
-          {list.event_date && (
-            <div className="flex items-center gap-2 text-[0.85rem] text-ink-soft">
-              <Icon name="calendar" className="w-4 h-4 text-sage-dark shrink-0" />
-              {fmtDate(list.event_date)}
-            </div>
-          )}
-          {list.event_time && (
-            <div className="flex items-center gap-2 text-[0.85rem] text-ink-soft">
-              <Icon name="clock" className="w-4 h-4 text-sage-dark shrink-0" />
-              {list.event_time} hs
-            </div>
-          )}
-          {list.event_location && (
-            <div className="flex items-center gap-2 text-[0.85rem] text-ink-soft">
-              <Icon name="pin" className="w-4 h-4 text-sage-dark shrink-0" />
-              {list.event_location}
-            </div>
-          )}
-        </div>
 
         {total > 0 && (
           <div className="flex items-center gap-2.5 mt-3">
@@ -135,6 +106,49 @@ export default async function ListPage({
           </div>
         )}
       </div>
+
+      {/* Datos del evento + flyer — pantalla partida, igual para organizador e invitados */}
+      {(list.event_date || list.event_time || list.event_location || list.flyer_image_url) && (
+        <div
+          className={`bg-white rounded-[20px] border border-line mb-5 overflow-hidden ${
+            list.flyer_image_url ? "md:grid md:grid-cols-2" : ""
+          }`}
+        >
+          {/* Datos */}
+          <div className="p-5 md:p-6 flex flex-col justify-center gap-2.5">
+            {list.event_date && (
+              <div className="flex items-center gap-2 text-[0.9rem] text-ink-soft">
+                <Icon name="calendar" className="w-4.5 h-4.5 text-sage-dark shrink-0" />
+                {fmtDate(list.event_date)}
+              </div>
+            )}
+            {list.event_time && (
+              <div className="flex items-center gap-2 text-[0.9rem] text-ink-soft">
+                <Icon name="clock" className="w-4.5 h-4.5 text-sage-dark shrink-0" />
+                {list.event_time} hs
+              </div>
+            )}
+            {list.event_location && (
+              <div className="flex items-center gap-2 text-[0.9rem] text-ink-soft">
+                <Icon name="pin" className="w-4.5 h-4.5 text-sage-dark shrink-0" />
+                {list.event_location}
+              </div>
+            )}
+          </div>
+
+          {/* Flyer — proporción vertical 4:5 (1080x1350), imagen completa sin recortar */}
+          {list.flyer_image_url && (
+            <div className="bg-cream-2 aspect-[4/5] md:aspect-auto md:h-full flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={list.flyer_image_url}
+                alt="Invitación del evento"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Banner aclaratorio para invitados: Un Deseo no es una tienda */}
       {!isOwner && (

@@ -79,17 +79,19 @@ export function FlyerUploader({
     <div>
       {preview ? (
         <div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={preview}
-            alt="Flyer del evento"
-            className="w-full rounded-xl mb-2 max-h-52 object-cover"
-          />
+          <div className="w-full aspect-[4/5] max-w-40 mx-auto bg-cream-2 rounded-xl overflow-hidden mb-2 flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={preview}
+              alt="Flyer del evento"
+              className="w-full h-full object-contain"
+            />
+          </div>
           <button
             type="button"
             onClick={handleRemove}
             disabled={isUploading}
-            className="text-[0.75rem] text-ink-soft underline"
+            className="text-[0.75rem] text-ink-soft underline block mx-auto"
           >
             {isUploading ? "Quitando…" : "Quitar imagen"}
           </button>
