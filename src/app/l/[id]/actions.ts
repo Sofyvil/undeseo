@@ -97,6 +97,59 @@ function findPriceInJsonLd(rawStrings: string[]): string | number | null {
   return found;
 }
 
+function extractMetaMap(html: string): Record<string, string> {
+  const map: Record<string, string> = {};
+  const metaTags = html.match(/<meta\b[^>]*>/gi) || [];
+  for (const tag of metaTags) {
+    const propMatch = tag.match(/(?:property|name)\s*=\s*["']([^"']+)["']/i);
+    const contentMatch = tag.match(/content\s*=\s*["']([^"']*)["']/i);
+    if (propMatch && contentMatch) {
+      map[propMatch[1].toLowerCase()] = contentMatch[1];
+    }
+  }
+  return map;
+}
+
+function extractJsonLdBlocks(html: string): string[] {
+  const blocks: string[] = [];
+  const re = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    blocks.push(m[1]);
+  }
+  return blocks;
+}
+
+// Lee la página nosotros mismos (desde el servidor) en vez de depender
+// pura y exclusivamente de la API externa — más confiable para precio.
+async function scrapeDirectly(url: string): Promise<{ name: string | null; image: string | null; price: number | null }> {
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+    },
+  });
+  const html = await res.text();
+
+  const metaMap = extractMetaMap(html);
+  const jsonldBlocks = extractJsonLdBlocks(html);
+
+  let price = parsePriceString(String(findPriceInJsonLd(jsonldBlocks) ?? ""));
+  if (!price) {
+    const metaPrice =
+      metaMap["product:price:amount"] ||
+      metaMap["og:price:amount"] ||
+      metaMap["twitter:data1"] ||
+      null;
+    price = parsePriceString(metaPrice);
+  }
+
+  const name = metaMap["og:title"] || null;
+  const image = metaMap["og:image"] || null;
+
+  return { name, image, price };
+}
+
 export type LinkPreview = {
   name: string;
   image: string | null;
@@ -107,6 +160,21 @@ export type LinkPreview = {
 
 export async function fetchLinkPreview(rawUrl: string): Promise<LinkPreview> {
   const url = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
+
+  // 1er intento: lectura directa nuestra (más confiable para precio)
+  let direct: { name: string | null; image: string | null; price: number | null } | null = null;
+  try {
+    direct = await scrapeDirectly(url);
+  } catch {
+    direct = null;
+  }
+
+  if (direct && (direct.name || direct.price)) {
+    if (direct.name && direct.price) {
+      return { name: direct.name, image: direct.image, price: direct.price, url };
+    }
+    // Nos faltó algo (ej. precio no encontrado) — completamos con Microlink abajo
+  }
 
   const params = new URLSearchParams({ url, meta: "true" });
   params.set("data.jsonld.selectorAll", 'script[type="application/ld+json"]');
@@ -159,12 +227,16 @@ export async function fetchLinkPreview(rawUrl: string): Promise<LinkPreview> {
     }
 
     return {
-      name: d.title || "",
-      image: d.image?.url || d.logo?.url || null,
-      price,
+      name: direct?.name || d.title || "",
+      image: direct?.image || d.image?.url || d.logo?.url || null,
+      price: direct?.price ?? price,
       url,
     };
   } catch {
+    // Si Microlink falla pero ya teníamos algo de la lectura directa, lo usamos igual
+    if (direct && (direct.name || direct.price)) {
+      return { name: direct.name || "", image: direct.image, price: direct.price, url };
+    }
     return { name: "", image: null, price: null, url, error: "No pudimos leer la página automáticamente. Completá los datos a mano." };
   }
 }
