@@ -10,6 +10,7 @@ export function AddItemForm({ listId }: { listId: string }) {
   const [manualMode, setManualMode] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [details, setDetails] = useState("");
   const [isFetching, startFetching] = useTransition();
   const [isSaving, startSaving] = useTransition();
 
@@ -29,6 +30,7 @@ export function AddItemForm({ listId }: { listId: string }) {
       await addItem(listId, {
         name: name.trim(),
         price: price ? Number(price) : null,
+        details: details.trim() || null,
         productUrl: preview?.url || null,
         imageUrl: preview?.image || null,
         source: "link",
@@ -39,6 +41,7 @@ export function AddItemForm({ listId }: { listId: string }) {
       setManualMode(false);
       setName("");
       setPrice("");
+      setDetails("");
     });
   }
 
@@ -111,20 +114,41 @@ export function AddItemForm({ listId }: { listId: string }) {
               )}
             </div>
           )}
-          <div className="flex-1 flex flex-col gap-2">
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Producto"
-              className="px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
-            />
-            <input
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              type="number"
-              placeholder="Precio (opcional)"
-              className="px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
-            />
+          <div className="flex-1 flex flex-col gap-2.5">
+            <div>
+              <label className="text-[0.75rem] font-semibold text-ink block mb-1">
+                Producto
+              </label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nombre del producto"
+                className="w-full px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
+              />
+            </div>
+            <div>
+              <label className="text-[0.75rem] font-semibold text-ink-soft block mb-1">
+                Precio <span className="font-normal text-ink-soft/70">(opcional)</span>
+              </label>
+              <input
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                type="number"
+                placeholder="Ej: 18500"
+                className="w-full px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
+              />
+            </div>
+            <div>
+              <label className="text-[0.75rem] font-semibold text-ink-soft block mb-1">
+                Detalles <span className="font-normal text-ink-soft/70">(opcional)</span>
+              </label>
+              <input
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
+                placeholder="Ej: talle, color, otros detalles"
+                className="w-full px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
+              />
+            </div>
             <button
               type="button"
               onClick={handleAdd}

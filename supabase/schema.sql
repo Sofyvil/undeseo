@@ -36,6 +36,7 @@ create table items (
   list_id uuid not null references lists(id) on delete cascade,
   name text not null,
   price numeric,
+  details text, -- talle, color, u otras aclaraciones opcionales
   image_url text,
   product_url text,
   source text not null default 'link', -- 'link' | 'catalog'

@@ -195,6 +195,9 @@ export default async function ListPage({
               <p className="font-semibold text-[0.88rem] leading-snug mb-0.5">
                 {item.name}
               </p>
+              {item.details && (
+                <p className="text-[0.74rem] text-ink-soft mb-1">{item.details}</p>
+              )}
               {money(item.price) ? (
                 <span className="font-mono-price text-[0.78rem] font-semibold text-sage-dark bg-sage/10 px-2 py-0.5 rounded">
                   {money(item.price)}

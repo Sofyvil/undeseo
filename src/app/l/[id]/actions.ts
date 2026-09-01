@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 export async function addItem(
   listId: string,
-  data: { name: string; price: number | null; productUrl: string | null; imageUrl: string | null; source: "link" | "catalog" }
+  data: { name: string; price: number | null; details: string | null; productUrl: string | null; imageUrl: string | null; source: "link" | "catalog" }
 ) {
   const supabase = await createClient();
 
@@ -15,6 +15,7 @@ export async function addItem(
     list_id: listId,
     name: data.name,
     price: data.price,
+    details: data.details,
     product_url: data.productUrl,
     image_url: data.imageUrl,
     source: data.source,
@@ -24,6 +25,15 @@ export async function addItem(
 }
 
 // --- Auto-completado al pegar un link ---
+//
+// IMPORTANTE — no cambiar el orden de esto sin motivo:
+// La lectura DIRECTA (scrapeDirectly, más abajo) es el método PRINCIPAL
+// y más confiable para traer el precio, sobre todo en tiendas argentinas
+// tipo Cheeky que exponen `og:price:amount` en el HTML. La consulta a la
+// API de Microlink queda solo como respaldo (por ejemplo, si un sitio
+// bloquea la lectura directa). Esto ya se probó y funciona — si en algún
+// momento el precio "deja de andar" de nuevo, revisar PRIMERO que
+// scrapeDirectly() siga siendo el primer intento antes de tocar nada más.
 
 function mqlValue(v: unknown): string | null {
   if (v === null || v === undefined) return null;
