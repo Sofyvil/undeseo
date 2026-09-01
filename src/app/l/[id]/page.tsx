@@ -145,12 +145,14 @@ export default async function ListPage({
         <div className="bg-forest text-white rounded-2xl px-4 py-3.5 mb-5 flex items-center gap-3">
           <Icon name="share" className="w-4.5 h-4.5 text-white/80 shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-[0.72rem] text-white/60 leading-none mb-1">
+            <p className="text-[0.72rem] text-white/60 leading-none mb-1.5">
               Link para tus invitados
             </p>
-            <p className="font-mono-price text-[0.75rem] truncate text-white/95">
-              {guestLink}
-            </p>
+            <div className="bg-white/15 rounded-lg px-2.5 py-1.5 w-full">
+              <p className="font-mono-price text-[0.75rem] truncate text-white/95">
+                {guestLink}
+              </p>
+            </div>
           </div>
           <CopyLinkButton link={guestLink} />
         </div>

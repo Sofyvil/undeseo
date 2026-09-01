@@ -72,7 +72,7 @@ export function AddItemForm({ listId }: { listId: string }) {
             onClick={() => setManualMode(true)}
             className="text-[0.75rem] text-ink-soft underline mt-2"
           >
-            Prefiero cargarlo a mano (sin link)
+            ¿No tenés un link para este regalo? Cargalo así
           </button>
 
           {preview?.error && (
@@ -115,7 +115,7 @@ export function AddItemForm({ listId }: { listId: string }) {
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Nombre del producto"
+              placeholder="Producto"
               className="px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
             />
             <input
