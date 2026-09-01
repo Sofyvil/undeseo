@@ -1,10 +1,18 @@
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
-import { reserveItem, unreserveItem, deleteItem } from "./actions";
+import { reserveItem, unreserveItem, deleteItem, updateEventDetails } from "./actions";
 import { notFound } from "next/navigation";
 import { AddItemForm } from "./AddItemForm";
 import { CopyLinkButton } from "./CopyLinkButton";
+import { FlyerUploader } from "./FlyerUploader";
+
+const CANVA_LINKS: Record<string, string> = {
+  baby_shower: "https://www.canva.com/es_mx/invitaciones/plantillas/baby-shower/",
+  nacimiento: "https://www.canva.com/es_mx/invitaciones/plantillas/baby-shower/",
+  cumple: "https://www.canva.com/es_mx/invitaciones/plantillas/cumpleanos/",
+  otro: "https://www.canva.com/es_mx/invitaciones/plantillas/",
+};
 
 const EVENT_LABELS: Record<string, string> = {
   baby_shower: "Baby shower",
@@ -137,6 +145,72 @@ export default async function ListPage({
             regalo, pero <strong className="text-ink">la compra se hace en la tienda original</strong>{" "}
             (tocá &quot;Ver producto&quot; para ir). No gestionamos pagos, stock ni envíos.
           </p>
+        </div>
+      )}
+
+      {/* Datos del evento + invitación (solo organizador) — panel de 2 columnas, todo opcional */}
+      {isOwner && (
+        <div className="bg-white rounded-[20px] border border-line p-4.5 mb-5 md:grid md:grid-cols-2 md:gap-6">
+          {/* Columna izquierda: datos del evento */}
+          <form action={updateEventDetails.bind(null, id)} className="flex flex-col gap-2.5">
+            <p className="font-display font-semibold text-[1.05rem] mb-1">
+              Datos del evento
+            </p>
+            <div>
+              <label className="text-[0.72rem] font-semibold text-ink-soft block mb-1">
+                Fecha
+              </label>
+              <input
+                type="date"
+                name="eventDate"
+                defaultValue={list.event_date || ""}
+                className="w-full px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
+              />
+            </div>
+            <div>
+              <label className="text-[0.72rem] font-semibold text-ink-soft block mb-1">
+                Hora
+              </label>
+              <input
+                type="time"
+                name="eventTime"
+                defaultValue={list.event_time || ""}
+                className="w-full px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
+              />
+            </div>
+            <div>
+              <label className="text-[0.72rem] font-semibold text-ink-soft block mb-1">
+                Lugar
+              </label>
+              <input
+                name="eventLocation"
+                defaultValue={list.event_location || ""}
+                placeholder="Dirección o nombre del salón"
+                className="w-full px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-1 py-2 rounded-full bg-sage text-white font-semibold text-[0.8rem] hover:bg-sage-dark transition-colors"
+            >
+              Guardar
+            </button>
+          </form>
+
+          {/* Columna derecha: invitación */}
+          <div className="flex flex-col mt-5 md:mt-0 md:pl-6 md:border-l md:border-line">
+            <p className="font-display font-semibold text-[1.05rem] mb-2.5">
+              Invitación
+            </p>
+            <FlyerUploader listId={id} currentUrl={list.flyer_image_url} />
+            <a
+              href={CANVA_LINKS[list.event_type] || CANVA_LINKS.otro}
+              target="_blank"
+              className="text-[0.78rem] text-sage-dark font-semibold underline mt-3 text-center"
+            >
+              Creá acá tu invitación ↗
+            </a>
+          </div>
         </div>
       )}
 

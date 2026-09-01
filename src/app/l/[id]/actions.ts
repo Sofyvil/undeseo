@@ -3,6 +3,30 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
+export async function updateEventDetails(
+  listId: string,
+  formData: FormData
+) {
+  const supabase = await createClient();
+
+  await supabase
+    .from("lists")
+    .update({
+      event_date: (formData.get("eventDate") as string) || null,
+      event_time: (formData.get("eventTime") as string) || null,
+      event_location: (formData.get("eventLocation") as string) || null,
+    })
+    .eq("id", listId);
+
+  revalidatePath(`/l/${listId}`);
+}
+
+export async function setFlyerImage(listId: string, url: string | null) {
+  const supabase = await createClient();
+  await supabase.from("lists").update({ flyer_image_url: url }).eq("id", listId);
+  revalidatePath(`/l/${listId}`);
+}
+
 export async function addItem(
   listId: string,
   data: { name: string; price: number | null; details: string | null; productUrl: string | null; imageUrl: string | null; source: "link" | "catalog" }
