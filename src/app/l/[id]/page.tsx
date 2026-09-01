@@ -138,7 +138,7 @@ export default async function ListPage({
 
           {/* Flyer — proporción vertical 4:5 (1080x1350), imagen completa sin recortar */}
           {list.flyer_image_url && (
-            <div className="bg-cream-2 aspect-[4/5] md:aspect-auto md:h-full flex items-center justify-center">
+            <div className="bg-cream-2 aspect-[4/5] max-w-72 mx-auto md:mx-0 md:my-6 md:mr-6 rounded-xl overflow-hidden flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={list.flyer_image_url}
