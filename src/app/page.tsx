@@ -5,8 +5,8 @@ import { createList } from "./actions";
 const EVENTS = [
   { id: "baby_shower", label: "Baby shower", image: "/icons/osito.png" },
   { id: "nacimiento", label: "Nacimiento", image: "/icons/chupete.png" },
-  { id: "cumple", label: "Cumpleaños", icon: "cake" as const },
-  { id: "otro", label: "Otro evento", icon: "sparkle" as const },
+  { id: "cumple", label: "Cumpleaños", image: "/icons/torta.png" },
+  { id: "otro", label: "Otro evento", image: "/icons/estrellas.png" },
 ];
 
 const HOW_IT_WORKS = [
@@ -120,19 +120,12 @@ export default function Home() {
                   defaultChecked={i === 0}
                   className="sr-only"
                 />
-                {ev.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={ev.image}
-                    alt=""
-                    className="w-6.5 h-6.5 mx-auto mb-1.5 object-contain"
-                  />
-                ) : (
-                  <Icon
-                    name={ev.icon!}
-                    className="w-6.5 h-6.5 mx-auto mb-1.5 text-sage-dark"
-                  />
-                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={ev.image}
+                  alt=""
+                  className="w-6.5 h-6.5 mx-auto mb-1.5 object-contain"
+                />
                 <span>{ev.label}</span>
               </label>
             ))}
