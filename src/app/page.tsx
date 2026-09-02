@@ -31,11 +31,17 @@ export default async function Home() {
       {/* Barra de sesión */}
       <div className="flex justify-end mb-2">
         {user ? (
-          <Link href="/mis-listas" className="text-[0.8rem] text-sage-dark font-semibold underline">
+          <Link
+            href="/mis-listas"
+            className="px-4 py-1.5 rounded-full border border-line bg-white text-[0.78rem] text-sage-dark font-semibold hover:bg-cream-2 transition-colors"
+          >
             Mis listas
           </Link>
         ) : (
-          <Link href="/login" className="text-[0.8rem] text-sage-dark font-semibold underline">
+          <Link
+            href="/login"
+            className="px-4 py-1.5 rounded-full border border-line bg-white text-[0.78rem] text-sage-dark font-semibold hover:bg-cream-2 transition-colors"
+          >
             Iniciar sesión
           </Link>
         )}

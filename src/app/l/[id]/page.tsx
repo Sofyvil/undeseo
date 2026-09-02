@@ -156,14 +156,49 @@ export default async function ListPage({
         </div>
       )}
 
-      {/* Banner aclaratorio para invitados: Un Deseo no es una tienda */}
+      {/* Explicador para invitados: cómo funciona esto */}
       {!isOwner && (
-        <div className="bg-cream-2 border border-line rounded-2xl px-4 py-3 mb-5 flex gap-2.5 items-start">
-          <Icon name="tag" className="w-4 h-4 text-sage-dark shrink-0 mt-0.5" />
-          <p className="text-[0.78rem] text-ink-soft leading-snug">
-            Un Deseo no es una tienda: reservar acá avisa que ya elegiste el
-            regalo, pero <strong className="text-ink">la compra se hace en la tienda original</strong>{" "}
-            (tocá &quot;Ver producto&quot; para ir). No gestionamos pagos, stock ni envíos.
+        <div className="bg-white border border-line rounded-[20px] p-5 mb-5">
+          <p className="font-display font-semibold text-[1.1rem] mb-3.5">
+            ¿Cómo funciona?
+          </p>
+          <div className="flex flex-col gap-3.5">
+            <div className="flex gap-3 items-start">
+              <div className="w-9 h-9 shrink-0 rounded-xl bg-cream-2 flex items-center justify-center">
+                <Icon name="list" className="w-4.5 h-4.5 text-sage-dark" />
+              </div>
+              <div>
+                <p className="font-semibold text-[0.9rem]">Mirá todos los regalos</p>
+                <p className="text-ink-soft text-[0.8rem] mt-0.5 leading-snug">
+                  Elegí el que más te guste de la lista.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3 items-start">
+              <div className="w-9 h-9 shrink-0 rounded-xl bg-cream-2 flex items-center justify-center">
+                <Icon name="gift" className="w-4.5 h-4.5 text-sage-dark" />
+              </div>
+              <div>
+                <p className="font-semibold text-[0.9rem]">Reservalo</p>
+                <p className="text-ink-soft text-[0.8rem] mt-0.5 leading-snug">
+                  Marcarlo como reservado avisa a los demás que ya lo regalás vos, así nadie repite.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3 items-start">
+              <div className="w-9 h-9 shrink-0 rounded-xl bg-cream-2 flex items-center justify-center">
+                <Icon name="tag" className="w-4.5 h-4.5 text-sage-dark" />
+              </div>
+              <div>
+                <p className="font-semibold text-[0.9rem]">Comprálo en la tienda</p>
+                <p className="text-ink-soft text-[0.8rem] mt-0.5 leading-snug">
+                  Tocá el que elegiste y te lleva directo a la web del vendedor, donde se hace la compra.
+                </p>
+              </div>
+            </div>
+          </div>
+          <p className="text-[0.74rem] text-ink-soft mt-4 pt-3.5 border-t border-line">
+            Un Deseo no es una tienda — acá solo vas a encontrar la lista de regalos de {list.parents_name}.
           </p>
         </div>
       )}
@@ -275,13 +310,25 @@ export default async function ListPage({
             >
               <div className="w-full aspect-square rounded-xl bg-cream-2 flex items-center justify-center overflow-hidden mb-2.5">
                 {item.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover"
-                  />
+                  item.product_url ? (
+                    <a href={item.product_url} target="_blank" className="w-full h-full block">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.image_url}
+                        alt={item.name}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover"
+                      />
+                    </a>
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover"
+                    />
+                  )
                 ) : (
                   <Icon name="gift" className="w-9 h-9 text-sage-dark" />
                 )}
@@ -361,6 +408,23 @@ export default async function ListPage({
           ))
         )}
       </div>
+
+      {!isOwner && (
+        <div className="mt-8 text-center bg-white border border-line rounded-[20px] p-6">
+          <p className="font-display font-semibold text-[1.15rem]">
+            ¿Vos también tenés un festejo?
+          </p>
+          <p className="text-ink-soft text-[0.85rem] mt-1.5 mb-4">
+            Armá tu propia lista de regalos en un minuto, gratis.
+          </p>
+          <Link
+            href="/crear"
+            className="inline-block px-8 py-3 rounded-full bg-sage text-white font-semibold text-[0.9rem] hover:bg-sage-dark transition-colors"
+          >
+            Crear mi lista →
+          </Link>
+        </div>
+      )}
 
       <footer className="mt-8 text-center pt-4.5 border-t-2 border-dashed border-line text-[0.78rem] text-ink-soft">
         <div className="flex items-center justify-center gap-3">
