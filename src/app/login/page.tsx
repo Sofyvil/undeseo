@@ -3,7 +3,7 @@
 import { useState, type FormEvent, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Icon } from "@/components/Icon";
+import Image from "next/image";
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -43,12 +43,15 @@ function LoginForm() {
   return (
     <main className="max-w-md mx-auto w-full px-5 py-14">
       <div className="text-center mb-8">
-        <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-sage flex items-center justify-center -rotate-6">
-          <Icon name="tag" className="w-6 h-6 text-white" />
-        </div>
-        <h1 className="font-display text-3xl font-bold">Entrá a Un Deseo</h1>
-        <p className="text-ink-soft mt-2 text-[0.9rem]">
-          Para crear y guardar tus listas.
+        <Image
+          src="/stickers-login.png"
+          alt=""
+          width={900}
+          height={491}
+          className="w-full max-w-[340px] h-auto mx-auto mb-5"
+        />
+        <p className="font-display text-xl font-semibold text-ink">
+          Entrá a Un Deseo para crear y guardar tus listas.
         </p>
       </div>
 

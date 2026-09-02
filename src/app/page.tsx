@@ -56,7 +56,7 @@ export default async function Home() {
           width={1200}
           height={800}
           priority
-          className="h-24 md:h-28 w-auto mx-auto mb-3"
+          className="h-32 md:h-40 w-auto mx-auto mb-3"
         />
         <h1 className="font-display text-xl md:text-2xl font-semibold mt-1 leading-tight text-ink">
           Una lista, todas las tiendas
