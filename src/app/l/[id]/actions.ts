@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { extractMLItemId, fetchMLItem } from "@/lib/mercadolibre";
 
 export async function updateEventDetails(
   listId: string,
@@ -194,6 +195,18 @@ export type LinkPreview = {
 
 export async function fetchLinkPreview(rawUrl: string): Promise<LinkPreview> {
   const url = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
+
+  // Mercado Libre: vía oficial primero, siempre — nunca intentar
+  // scrapear su HTML (nos bloquean y devuelven el logo genérico).
+  const mlItemId = extractMLItemId(url);
+  if (mlItemId) {
+    const mlItem = await fetchMLItem(mlItemId);
+    if (mlItem) {
+      return { name: mlItem.name, image: mlItem.image, price: mlItem.price, url };
+    }
+    // Si la conexión con ML no está lista o falló, seguimos con el resto
+    // como respaldo — probablemente no traiga precio, pero no rompemos nada.
+  }
 
   // 1er intento: lectura directa nuestra (más confiable para precio)
   let direct: { name: string | null; image: string | null; price: number | null } | null = null;

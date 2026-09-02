@@ -76,3 +76,18 @@ create policy "el dueño de la lista borra items" on items
   );
 
 create policy "cualquiera puede leer el catálogo" on store_products for select using (true);
+
+-- Credenciales de la conexión oficial con Mercado Libre (una sola fila,
+-- se conecta una vez desde /api/ml/connect y después se auto-renueva sola)
+create table ml_credentials (
+  id int primary key default 1,
+  access_token text,
+  refresh_token text,
+  expires_at timestamptz,
+  updated_at timestamptz default now(),
+  constraint single_row check (id = 1)
+);
+alter table ml_credentials enable row level security;
+-- Sin políticas públicas a propósito: solo el backend (con la service key)
+-- puede leer o escribir esta tabla. Nadie más debe poder verla.
+

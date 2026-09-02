@@ -1,0 +1,117 @@
+import { createAdminClient } from "@/lib/supabase/admin";
+
+const ML_TOKEN_URL = "https://api.mercadolibre.com/oauth/token";
+
+type MLTokenResponse = {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+};
+
+async function saveTokens(tokens: MLTokenResponse) {
+  const supabase = createAdminClient();
+  const expiresAt = new Date(Date.now() + tokens.expires_in * 1000).toISOString();
+
+  await supabase.from("ml_credentials").upsert({
+    id: 1,
+    access_token: tokens.access_token,
+    refresh_token: tokens.refresh_token,
+    expires_at: expiresAt,
+    updated_at: new Date().toISOString(),
+  });
+}
+
+export async function exchangeCodeForTokens(code: string, redirectUri: string) {
+  const res = await fetch(ML_TOKEN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "authorization_code",
+      client_id: process.env.ML_CLIENT_ID!,
+      client_secret: process.env.ML_CLIENT_SECRET!,
+      code,
+      redirect_uri: redirectUri,
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok || !data.access_token) {
+    throw new Error(data.message || "No se pudo conectar con Mercado Libre");
+  }
+  await saveTokens(data);
+}
+
+async function refreshAccessToken(refreshToken: string) {
+  const res = await fetch(ML_TOKEN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      client_id: process.env.ML_CLIENT_ID!,
+      client_secret: process.env.ML_CLIENT_SECRET!,
+      refresh_token: refreshToken,
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok || !data.access_token) {
+    throw new Error("No se pudo renovar la conexión con Mercado Libre");
+  }
+  await saveTokens(data);
+  return data.access_token as string;
+}
+
+// Devuelve un access_token válido, renovándolo solo si hace falta.
+// Devuelve null si todavía no se conectó nunca (falta el paso manual).
+export async function getValidMLAccessToken(): Promise<string | null> {
+  const supabase = createAdminClient();
+  const { data: row } = await supabase
+    .from("ml_credentials")
+    .select("*")
+    .eq("id", 1)
+    .maybeSingle();
+
+  if (!row || !row.refresh_token) return null;
+
+  const expiresAt = row.expires_at ? new Date(row.expires_at).getTime() : 0;
+  const isExpiringSoon = expiresAt - Date.now() < 5 * 60 * 1000; // margen de 5 min
+
+  if (!isExpiringSoon && row.access_token) {
+    return row.access_token as string;
+  }
+
+  try {
+    return await refreshAccessToken(row.refresh_token);
+  } catch {
+    return null;
+  }
+}
+
+// Extrae el ID de un producto (ej. "MLA1118958953") de una URL de Mercado Libre.
+export function extractMLItemId(url: string): string | null {
+  const match = url.match(/ML[ABC]-?(\d+)/i);
+  if (!match) return null;
+  const siteCode = match[0].slice(0, 3).toUpperCase();
+  return `${siteCode}${match[1]}`;
+}
+
+export type MLItemPreview = {
+  name: string;
+  price: number | null;
+  image: string | null;
+};
+
+export async function fetchMLItem(itemId: string): Promise<MLItemPreview | null> {
+  const token = await getValidMLAccessToken();
+  if (!token) return null;
+
+  const res = await fetch(`https://api.mercadolibre.com/items/${itemId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) return null;
+
+  const data = await res.json();
+  return {
+    name: data.title || "",
+    price: typeof data.price === "number" ? data.price : null,
+    image: data.pictures?.[0]?.secure_url || data.pictures?.[0]?.url || data.thumbnail || null,
+  };
+}
