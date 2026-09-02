@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Jost, IBM_Plex_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { PostHogProvider } from "@/components/PostHogProvider";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -32,7 +34,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       className={`${fraunces.variable} ${jost.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-body">{children}</body>
+      <body className="min-h-full flex flex-col font-body">
+        <PostHogProvider>{children}</PostHogProvider>
+        <Analytics />
+      </body>
     </html>
   );
 }

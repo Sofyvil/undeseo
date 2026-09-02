@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { trackServer } from "@/lib/analytics-server";
 
 export async function createList(formData: FormData) {
   const supabase = await createClient();
@@ -43,6 +44,11 @@ export async function createList(formData: FormData) {
     // TODO: mostrar un mensaje de error prolijo en vez de romper
     throw new Error(error?.message ?? "No se pudo crear la lista");
   }
+
+  await trackServer(user.email ?? user.id, "lista_creada", {
+    eventType,
+    listId: data.id,
+  });
 
   redirect(`/l/${data.id}`);
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 
 export function CopyLinkButton({ link }: { link: string }) {
   const [copied, setCopied] = useState(false);
@@ -11,6 +12,7 @@ export function CopyLinkButton({ link }: { link: string }) {
       onClick={() => {
         navigator.clipboard?.writeText(link).then(() => {
           setCopied(true);
+          track("lista_compartida", { link });
           setTimeout(() => setCopied(false), 1800);
         });
       }}

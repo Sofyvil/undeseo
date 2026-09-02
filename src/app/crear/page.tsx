@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { EVENTS } from "@/lib/events";
 import { createList } from "../actions";
+import { SponsoredProduct } from "@/components/SponsoredProduct";
 
 export default async function CrearPage() {
   const supabase = await createClient();
@@ -22,6 +23,8 @@ export default async function CrearPage() {
           Creando como <strong className="text-ink">{user.email}</strong>
         </p>
       </div>
+
+      <SponsoredProduct />
 
       <form action={createList} className="flex flex-col gap-4 md:max-w-xl md:mx-auto">
         <div>

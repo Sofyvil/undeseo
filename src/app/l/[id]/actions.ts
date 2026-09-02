@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { extractMLItemId, fetchMLItem } from "@/lib/mercadolibre";
+import { trackServer } from "@/lib/analytics-server";
 
 export async function updateEventDetails(
   listId: string,
@@ -304,6 +305,11 @@ export async function reserveItem(
       confirmed: false,
     })
     .eq("id", itemId);
+
+  await trackServer(guestName || "invitado_anonimo", "invitado_reservo", {
+    listId,
+    itemId,
+  });
 
   revalidatePath(`/l/${listId}`);
 }
