@@ -8,6 +8,7 @@ create table sponsored_products (
   product_name text not null,
   image_url text,
   product_url text not null,
+  event_type text, -- null = se muestra para cualquier evento; o baby_shower | nacimiento | cumple | otro
   active boolean default true,
   created_at timestamptz default now()
 );

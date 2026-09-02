@@ -25,6 +25,7 @@ export async function addSponsoredProduct(formData: FormData) {
   const productName = formData.get("productName") as string;
   const imageUrl = (formData.get("imageUrl") as string) || null;
   const productUrl = formData.get("productUrl") as string;
+  const eventType = (formData.get("eventType") as string) || null;
 
   if (!brandName || !productName || !productUrl) return;
 
@@ -33,6 +34,7 @@ export async function addSponsoredProduct(formData: FormData) {
     product_name: productName,
     image_url: imageUrl,
     product_url: productUrl,
+    event_type: eventType || null,
     active: true,
   });
 

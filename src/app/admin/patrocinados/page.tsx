@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
+import { EVENT_LABELS } from "@/lib/events";
 import {
   addSponsoredProduct,
   toggleSponsoredProduct,
@@ -82,6 +83,23 @@ export default async function PatrocinadosAdminPage() {
             className="w-full px-3.5 py-2.5 rounded-xl border border-line bg-cream outline-none focus:border-sage text-[0.9rem]"
           />
         </div>
+        <div>
+          <label className="text-[0.78rem] font-semibold text-ink-soft mb-1 block">
+            ¿Para qué evento?
+          </label>
+          <select
+            name="eventType"
+            defaultValue=""
+            className="w-full px-3.5 py-2.5 rounded-xl border border-line bg-cream outline-none focus:border-sage text-[0.9rem]"
+          >
+            <option value="">Todos los eventos</option>
+            {Object.entries(EVENT_LABELS).map(([id, label]) => (
+              <option key={id} value={id}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
         <button
           type="submit"
           className="mt-1 py-2.5 rounded-full bg-sage text-white font-semibold text-[0.85rem] hover:bg-sage-dark transition-colors"
@@ -121,7 +139,7 @@ export default async function PatrocinadosAdminPage() {
                 {p.product_name}
               </p>
               <p className="text-ink-soft text-[0.78rem] truncate">
-                {p.brand_name}
+                {p.brand_name} · {p.event_type ? EVENT_LABELS[p.event_type] ?? p.event_type : "Todos los eventos"}
               </p>
             </div>
             <form
