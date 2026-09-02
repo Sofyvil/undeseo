@@ -15,7 +15,7 @@ export default async function CrearPage() {
   return (
     <main className="max-w-lg md:max-w-2xl mx-auto w-full px-5 md:px-8 py-8 md:py-14">
       <div className="text-center mb-6">
-        <h1 className="font-display text-3xl font-bold text-[#2B2A24]">
+        <h1 className="font-display text-3xl font-bold text-ink">
           Armá tu lista
         </h1>
         <p className="text-ink-soft mt-2 text-[0.9rem]">

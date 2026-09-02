@@ -1,4 +1,5 @@
 import { Icon } from "@/components/Icon";
+import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
@@ -49,16 +50,16 @@ export default async function Home() {
 
       {/* Hero */}
       <div className="text-center pt-4 pb-2">
-        <div className="w-15 h-15 mx-auto mb-4 rounded-2xl bg-sage flex items-center justify-center -rotate-6 shadow-lg shadow-sage-dark/25">
-          <Icon name="tag" className="w-7 h-7 text-white" />
-        </div>
-        <p className="font-mono-price text-[0.68rem] tracking-[0.11em] uppercase text-sage-dark font-semibold">
-          Un Deseo
-        </p>
-        <h1 className="font-display text-4xl md:text-5xl font-bold mt-2 leading-tight text-[#2B2A24]">
-          Una lista,
-          <br />
-          todas las tiendas
+        <Image
+          src="/logo.png"
+          alt="Un Deseo"
+          width={1200}
+          height={800}
+          priority
+          className="h-24 md:h-28 w-auto mx-auto mb-3"
+        />
+        <h1 className="font-display text-xl md:text-2xl font-semibold mt-1 leading-tight text-ink">
+          Una lista, todas las tiendas
         </h1>
         <p className="text-ink-soft mt-3 text-[0.95rem] md:text-base md:max-w-md md:mx-auto">
           Pegás los links de lo que querés recibir. Tus invitados eligen y
