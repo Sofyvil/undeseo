@@ -1,6 +1,6 @@
 # Un Deseo
 
-Listas de regalos para baby shower, nacimiento y otros festejos.
+Listas de regalos para baby shower, nacimiento y otros festejos .
 
 ## Qué tiene esta primera versión (Semana 1 del plan)
 
