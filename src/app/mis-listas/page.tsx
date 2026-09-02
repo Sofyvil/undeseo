@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { signOut } from "./actions";
+import { DeleteListButton } from "./DeleteListButton";
 
 const EVENT_LABELS: Record<string, string> = {
   baby_shower: "Baby shower",
@@ -52,19 +53,23 @@ export default async function MisListasPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {lists.map((l) => (
-            <Link
+            <div
               key={l.id}
-              href={`/l/${l.id}`}
               className="bg-white border border-line rounded-2xl p-4 flex items-center justify-between hover:border-sage transition-colors"
             >
-              <div>
-                <p className="font-semibold">{l.parents_name}</p>
+              <Link href={`/l/${l.id}`} className="flex-1 min-w-0">
+                <p className="font-semibold truncate">{l.parents_name}</p>
                 <p className="text-[0.78rem] text-ink-soft">
                   {EVENT_LABELS[l.event_type] ?? "Evento"}
                 </p>
+              </Link>
+              <div className="flex items-center gap-3 shrink-0">
+                <DeleteListButton listId={l.id} listName={l.parents_name} />
+                <Link href={`/l/${l.id}`}>
+                  <Icon name="gift" className="w-5 h-5 text-sage-dark" />
+                </Link>
               </div>
-              <Icon name="gift" className="w-5 h-5 text-sage-dark shrink-0" />
-            </Link>
+            </div>
           ))}
         </div>
       )}
