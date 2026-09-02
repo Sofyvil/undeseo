@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { exchangeCodeForTokens } from "@/lib/mercadolibre";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
 
   if (!code) {
@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const redirectUri = `${origin}/api/ml/callback`;
+    const redirectUri = `${process.env.NEXT_PUBLIC_SITE_URL}/api/ml/callback`;
     await exchangeCodeForTokens(code, redirectUri);
     return new NextResponse(
       "<h1>✅ Conectado con Mercado Libre</h1><p>Ya podés cerrar esta pestaña.</p>",
