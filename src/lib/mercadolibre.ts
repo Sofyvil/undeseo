@@ -63,13 +63,21 @@ async function refreshAccessToken(refreshToken: string) {
 // Devuelve null si todavía no se conectó nunca (falta el paso manual).
 export async function getValidMLAccessToken(): Promise<string | null> {
   const supabase = createAdminClient();
-  const { data: row } = await supabase
+  const { data: row, error: dbError } = await supabase
     .from("ml_credentials")
     .select("*")
     .eq("id", 1)
     .maybeSingle();
 
-  if (!row || !row.refresh_token) return null;
+  if (dbError) {
+    console.error("[ML] Error leyendo ml_credentials:", dbError);
+    return null;
+  }
+
+  if (!row || !row.refresh_token) {
+    console.error("[ML] No hay credenciales guardadas todavía (row vacía o sin refresh_token)");
+    return null;
+  }
 
   const expiresAt = row.expires_at ? new Date(row.expires_at).getTime() : 0;
   const isExpiringSoon = expiresAt - Date.now() < 5 * 60 * 1000; // margen de 5 min
@@ -79,8 +87,10 @@ export async function getValidMLAccessToken(): Promise<string | null> {
   }
 
   try {
+    console.error("[ML] Renovando token (isExpiringSoon o sin access_token)");
     return await refreshAccessToken(row.refresh_token);
-  } catch {
+  } catch (e) {
+    console.error("[ML] Error renovando token:", e);
     return null;
   }
 }
@@ -117,12 +127,19 @@ export type MLItemPreview = {
 
 export async function fetchMLItem(itemId: string): Promise<MLItemPreview | null> {
   const token = await getValidMLAccessToken();
-  if (!token) return null;
+  if (!token) {
+    console.error("[ML] fetchMLItem: no hay token válido, aborto");
+    return null;
+  }
 
   const res = await fetch(`https://api.mercadolibre.com/items/${itemId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (!res.ok) return null;
+  if (!res.ok) {
+    const body = await res.text();
+    console.error(`[ML] fetchMLItem: la API respondió ${res.status} para ${itemId}:`, body);
+    return null;
+  }
 
   const data = await res.json();
   return {
