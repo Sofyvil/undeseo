@@ -1,13 +1,6 @@
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
-import { createList } from "./actions";
-
-const EVENTS = [
-  { id: "baby_shower", label: "Baby shower", image: "/icons/osito.png" },
-  { id: "nacimiento", label: "Nacimiento", image: "/icons/chupete.png" },
-  { id: "cumple", label: "Cumpleaños", image: "/icons/torta.png" },
-  { id: "otro", label: "Otro evento", image: "/icons/estrellas.png" },
-];
+import { createClient } from "@/lib/supabase/server";
 
 const HOW_IT_WORKS = [
   {
@@ -27,11 +20,29 @@ const HOW_IT_WORKS = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <main className="max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto w-full px-5 md:px-8 py-8 md:py-14">
+      {/* Barra de sesión */}
+      <div className="flex justify-end mb-2">
+        {user ? (
+          <Link href="/mis-listas" className="text-[0.8rem] text-sage-dark font-semibold underline">
+            Mis listas
+          </Link>
+        ) : (
+          <Link href="/login" className="text-[0.8rem] text-sage-dark font-semibold underline">
+            Iniciar sesión
+          </Link>
+        )}
+      </div>
+
       {/* Hero */}
-      <div className="text-center pt-6 pb-2">
+      <div className="text-center pt-4 pb-2">
         <div className="w-15 h-15 mx-auto mb-4 rounded-2xl bg-sage flex items-center justify-center -rotate-6 shadow-lg shadow-sage-dark/25">
           <Icon name="tag" className="w-7 h-7 text-white" />
         </div>
@@ -71,130 +82,17 @@ export default function Home() {
         ))}
       </div>
 
-      <hr className="border-t-2 border-dashed border-line my-5" />
-
-      {/* Formulario de creación */}
-      <form action={createList} className="flex flex-col gap-4 md:max-w-xl md:mx-auto">
-        <div>
-          <label className="text-[0.78rem] font-semibold text-ink-soft mb-1.5 block">
-            ¿Cómo se llama el festejo?
-          </label>
-          <input
-            name="parentsName"
-            placeholder="Ej: Baby shower de Juli"
-            required
-            className="w-full px-3.5 py-3 rounded-xl border border-line bg-white outline-none focus:border-sage text-[0.95rem]"
-          />
-        </div>
-
-        <div>
-          <label className="text-[0.78rem] font-semibold text-ink-soft mb-1.5 block">
-            Tu mail
-          </label>
-          <input
-            name="ownerEmail"
-            type="email"
-            placeholder="tu@mail.com"
-            required
-            className="w-full px-3.5 py-3 rounded-xl border border-line bg-white outline-none focus:border-sage text-[0.95rem]"
-          />
-          <p className="text-[0.72rem] text-ink-soft mt-1.5">
-            Lo usamos solo para poder devolverte el acceso a tu lista si perdés el link. Nunca lo compartimos ni lo usamos para otra cosa.
-          </p>
-        </div>
-
-        <fieldset>
-          <legend className="text-[0.78rem] font-semibold text-ink-soft mb-1.5">
-            Tipo de evento
-          </legend>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
-            {EVENTS.map((ev, i) => (
-              <label
-                key={ev.id}
-                className="border border-line rounded-2xl p-3 text-center cursor-pointer bg-white text-[0.85rem] font-semibold has-checked:border-sage has-checked:bg-sage/10 has-checked:text-sage-dark"
-              >
-                <input
-                  type="radio"
-                  name="eventType"
-                  value={ev.id}
-                  defaultChecked={i === 0}
-                  className="sr-only"
-                />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={ev.image}
-                  alt=""
-                  className="w-6.5 h-6.5 mx-auto mb-1.5 object-contain"
-                />
-                <span>{ev.label}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <div className="grid grid-cols-2 gap-2.5">
-          <div>
-            <label className="text-[0.78rem] font-semibold text-ink-soft mb-1.5 block">
-              Fecha (opcional)
-            </label>
-            <input
-              type="date"
-              name="eventDate"
-              className="w-full px-3.5 py-3 rounded-xl border border-line bg-white outline-none focus:border-sage text-[0.95rem]"
-            />
-          </div>
-          <div>
-            <label className="text-[0.78rem] font-semibold text-ink-soft mb-1.5 block">
-              Hora (opcional)
-            </label>
-            <input
-              type="time"
-              name="eventTime"
-              className="w-full px-3.5 py-3 rounded-xl border border-line bg-white outline-none focus:border-sage text-[0.95rem]"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="text-[0.78rem] font-semibold text-ink-soft mb-1.5 block">
-            Lugar (opcional)
-          </label>
-          <input
-            name="eventLocation"
-            placeholder="Ej: Salón Los Aromos, Villa Devoto"
-            className="w-full px-3.5 py-3 rounded-xl border border-line bg-white outline-none focus:border-sage text-[0.95rem]"
-          />
-        </div>
-
-        <label className="flex items-start gap-2.5 text-[0.8rem] text-ink-soft">
-          <input
-            type="checkbox"
-            name="acceptedTerms"
-            required
-            className="mt-0.5 w-4 h-4 shrink-0 accent-sage"
-          />
-          <span>
-            Leí y acepto los{" "}
-            <Link href="/terminos" target="_blank" className="text-sage-dark font-semibold underline">
-              Términos y Condiciones
-            </Link>
-            {" "}de Un Deseo.
-          </span>
-        </label>
-
-        <button
-          type="submit"
-          className="w-full md:w-auto md:px-10 md:mx-auto py-3.5 rounded-full bg-sage text-white font-semibold hover:bg-sage-dark transition-colors"
+      <div className="text-center">
+        <Link
+          href="/crear"
+          className="inline-block px-10 py-3.5 rounded-full bg-sage text-white font-semibold hover:bg-sage-dark transition-colors"
         >
           Crear mi lista →
-        </button>
-      </form>
-
-      <footer className="mt-8 text-center pt-4.5 border-t-2 border-dashed border-line text-[0.78rem] text-ink-soft">
-        <Link href="/recuperar" className="text-sage-dark font-semibold">
-          ¿Ya armaste una lista y perdiste el acceso?
         </Link>
-        <div className="mt-3 flex items-center justify-center gap-3">
+      </div>
+
+      <footer className="mt-10 text-center pt-4.5 border-t-2 border-dashed border-line text-[0.78rem] text-ink-soft">
+        <div className="flex items-center justify-center gap-3">
           <span className="flex items-center gap-1.5">
             <Icon name="gift" className="w-3.5 h-3.5 text-sage-dark" />
             Un Deseo

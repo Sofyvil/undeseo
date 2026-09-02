@@ -6,17 +6,21 @@ import { redirect } from "next/navigation";
 export async function createList(formData: FormData) {
   const supabase = await createClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login?next=/crear");
+  }
+
   const parentsName = (formData.get("parentsName") as string) || "Nuestro festejo";
-  const ownerEmail = (formData.get("ownerEmail") as string || "").trim().toLowerCase();
   const acceptedTerms = formData.get("acceptedTerms") === "on";
   const eventType = (formData.get("eventType") as string) || "baby_shower";
   const eventDate = (formData.get("eventDate") as string) || null;
   const eventTime = (formData.get("eventTime") as string) || null;
   const eventLocation = (formData.get("eventLocation") as string) || null;
 
-  if (!ownerEmail) {
-    throw new Error("Falta el mail del organizador");
-  }
   if (!acceptedTerms) {
     throw new Error("Hay que aceptar los Términos y Condiciones");
   }
@@ -24,14 +28,15 @@ export async function createList(formData: FormData) {
   const { data, error } = await supabase
     .from("lists")
     .insert({
+      user_id: user.id,
+      owner_email: user.email,
       parents_name: parentsName,
-      owner_email: ownerEmail,
       event_type: eventType,
       event_date: eventDate,
       event_time: eventTime,
       event_location: eventLocation,
     })
-    .select("id, owner_token")
+    .select("id")
     .single();
 
   if (error || !data) {
@@ -39,5 +44,5 @@ export async function createList(formData: FormData) {
     throw new Error(error?.message ?? "No se pudo crear la lista");
   }
 
-  redirect(`/l/${data.id}?owner=${data.owner_token}`);
+  redirect(`/l/${data.id}`);
 }

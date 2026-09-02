@@ -38,15 +38,16 @@ function fmtDate(d: string | null) {
 
 export default async function ListPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ owner?: string }>;
 }) {
   const { id } = await params;
-  const { owner } = await searchParams;
 
   const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: list } = await supabase
     .from("lists")
@@ -56,7 +57,7 @@ export default async function ListPage({
 
   if (!list) notFound();
 
-  const isOwner = owner === list.owner_token;
+  const isOwner = !!user && user.id === list.user_id;
 
   const { data: items } = await supabase
     .from("items")
@@ -81,6 +82,11 @@ export default async function ListPage({
         >
           {isOwner ? "✏️ Vista organizador" : "👀 Vista invitado"}
         </span>
+        {isOwner && (
+          <Link href="/mis-listas" className="text-[0.78rem] text-sage-dark font-semibold underline">
+            ← Mis listas
+          </Link>
+        )}
       </div>
 
       {/* Header de la lista: nombre + progreso */}
