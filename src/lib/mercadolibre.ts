@@ -86,11 +86,27 @@ export async function getValidMLAccessToken(): Promise<string | null> {
 }
 
 // Extrae el ID de un producto (ej. "MLA1118958953") de una URL de Mercado Libre.
+// Prioridad: primero el ítem real de la publicación (wid / item_id en la URL,
+// que es el que efectivamente se compra), y solo si no aparece, el ID
+// genérico de la ficha de producto (/p/MLA...).
 export function extractMLItemId(url: string): string | null {
-  const match = url.match(/ML[ABC]-?(\d+)/i);
-  if (!match) return null;
-  const siteCode = match[0].slice(0, 3).toUpperCase();
-  return `${siteCode}${match[1]}`;
+  let decoded = url;
+  try {
+    decoded = decodeURIComponent(url);
+  } catch {
+    // si falla el decode, seguimos con la url tal cual
+  }
+
+  const priorityPatterns = [/wid=(ML[ABC]\d+)/i, /item_id[:=](ML[ABC]\d+)/i];
+  for (const re of priorityPatterns) {
+    const m = decoded.match(re);
+    if (m) return m[1].toUpperCase();
+  }
+
+  const generalMatch = decoded.match(/ML[ABC]-?(\d+)/i);
+  if (!generalMatch) return null;
+  const siteCode = generalMatch[0].slice(0, 3).toUpperCase();
+  return `${siteCode}${generalMatch[1]}`;
 }
 
 export type MLItemPreview = {
