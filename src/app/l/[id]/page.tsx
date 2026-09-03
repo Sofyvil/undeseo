@@ -6,6 +6,13 @@ import { notFound } from "next/navigation";
 import { AddItemForm } from "./AddItemForm";
 import { CopyLinkButton } from "./CopyLinkButton";
 import { FlyerUploader } from "./FlyerUploader";
+import { SponsoredItemCard } from "./SponsoredItemCard";
+import { signOut } from "../../mis-listas/actions";
+
+function pickRotatingIndex(length: number) {
+  // Al azar en cada carga de página, así no se ve siempre el mismo.
+  return Math.floor(Math.random() * length);
+}
 
 const CANVA_LINKS: Record<string, string> = {
   baby_shower: "https://www.canva.com/es_mx/invitaciones/plantillas/baby-shower/",
@@ -69,6 +76,25 @@ export default async function ListPage({
   const reservedCount = items?.filter((i) => i.reserved).length ?? 0;
   const pct = total ? Math.round((reservedCount / total) * 100) : 0;
 
+  let sponsoredProduct = null;
+  if (isOwner) {
+    const { data: sponsoredProducts } = await supabase
+      .from("sponsored_products")
+      .select("*")
+      .eq("active", true);
+
+    if (sponsoredProducts && sponsoredProducts.length > 0) {
+      const forThisEvent = sponsoredProducts.filter(
+        (p) => p.event_type === list.event_type
+      );
+      const generic = sponsoredProducts.filter((p) => !p.event_type);
+      const pool = forThisEvent.length > 0 ? forThisEvent : generic;
+      if (pool.length > 0) {
+        sponsoredProduct = pool[pickRotatingIndex(pool.length)];
+      }
+    }
+  }
+
   const guestLink =
     (process.env.NEXT_PUBLIC_SITE_URL ?? "") + `/l/${id}`;
 
@@ -83,9 +109,16 @@ export default async function ListPage({
           {isOwner ? "✏️ Vista organizador" : "👀 Vista invitado"}
         </span>
         {isOwner && (
-          <Link href="/mis-listas" className="text-[0.78rem] text-sage-dark font-semibold underline">
-            ← Mis listas
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/mis-listas" className="text-[0.78rem] text-sage-dark font-semibold underline">
+              ← Mis listas
+            </Link>
+            <form action={signOut}>
+              <button className="text-[0.78rem] text-ink-soft underline">
+                Cerrar sesión
+              </button>
+            </form>
+          </div>
         )}
       </div>
 
@@ -292,6 +325,9 @@ export default async function ListPage({
 
       {/* Grilla de regalos */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        {isOwner && sponsoredProduct && (
+          <SponsoredItemCard listId={id} product={sponsoredProduct} />
+        )}
         {total === 0 ? (
           <div className="col-span-2 text-center py-10 px-5 text-ink-soft">
             <p className="text-3xl mb-2">🎁</p>
@@ -408,6 +444,15 @@ export default async function ListPage({
           ))
         )}
       </div>
+
+      {isOwner && sponsoredProduct && (
+        <Link
+          href={`/l/${id}/sugeridos`}
+          className="block text-center text-[0.82rem] text-sage-dark font-semibold underline mt-4"
+        >
+          Ver todos los sugeridos →
+        </Link>
+      )}
 
       {!isOwner && (
         <div className="mt-8 text-center bg-white border border-line rounded-[20px] p-6">

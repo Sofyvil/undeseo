@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { EVENTS } from "@/lib/events";
 import { createList } from "../actions";
-import { EventTypeField } from "@/components/EventTypeField";
+import { signOut } from "../mis-listas/actions";
 
 export default async function CrearPage() {
   const supabase = await createClient();
@@ -13,14 +13,14 @@ export default async function CrearPage() {
 
   if (!user) redirect("/login?next=/crear");
 
-  const { data: sponsoredProducts } = await supabase
-    .from("sponsored_products")
-    .select("*")
-    .eq("active", true);
-
   return (
     <main className="max-w-lg md:max-w-2xl mx-auto w-full px-5 md:px-8 py-8 md:py-14">
-      <div className="text-center mb-6">
+      <div className="text-center mb-6 relative">
+        <form action={signOut} className="absolute right-0 top-0">
+          <button className="text-[0.75rem] text-ink-soft underline">
+            Cerrar sesión
+          </button>
+        </form>
         <h1 className="font-display text-3xl font-bold text-ink">
           Armá tu lista
         </h1>
@@ -42,7 +42,34 @@ export default async function CrearPage() {
           />
         </div>
 
-        <EventTypeField events={EVENTS} sponsoredProducts={sponsoredProducts ?? []} />
+        <fieldset>
+          <legend className="text-[0.78rem] font-semibold text-ink-soft mb-1.5">
+            Tipo de evento
+          </legend>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+            {EVENTS.map((ev, i) => (
+              <label
+                key={ev.id}
+                className="border border-line rounded-2xl p-3 text-center cursor-pointer bg-white text-[0.85rem] font-semibold has-checked:border-sage has-checked:bg-sage/10 has-checked:text-sage-dark"
+              >
+                <input
+                  type="radio"
+                  name="eventType"
+                  value={ev.id}
+                  defaultChecked={i === 0}
+                  className="sr-only"
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={ev.image}
+                  alt=""
+                  className="w-6.5 h-6.5 mx-auto mb-1.5 object-contain"
+                />
+                <span>{ev.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
         <div className="grid grid-cols-2 gap-2.5">
           <div>

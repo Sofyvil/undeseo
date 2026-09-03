@@ -20,6 +20,11 @@ function LoginForm() {
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        queryParams: {
+          // Fuerza a que Google siempre pregunte qué cuenta usar, en vez
+          // de reusar en silencio la última sesión activa.
+          prompt: "select_account",
+        },
       },
     });
   }
