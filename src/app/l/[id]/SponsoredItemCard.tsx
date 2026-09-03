@@ -33,18 +33,20 @@ export function SponsoredItemCard({
 
   return (
     <div className="bg-white rounded-2xl border-2 border-rose p-2.5 relative">
-      {/* Sticker ondulado tipo nube, superpuesto en la esquina */}
-      <div className="absolute -top-6 -left-6 z-10 w-[128px] -rotate-6">
-        <svg viewBox="0 0 170 156" className="w-full h-auto drop-shadow-md">
-          <path
-            d="M 85.00 16.00 Q 107.62 9.13 123.00 24.31 Q 146.80 27.58 150.82 47.00 Q 169.42 59.55 161.00 78.00 Q 169.42 96.45 150.82 109.00 Q 146.80 128.42 123.00 131.69 Q 107.62 146.87 85.00 140.00 Q 62.38 146.87 47.00 131.69 Q 23.20 128.42 19.18 109.00 Q 0.58 96.45 9.00 78.00 Q 0.58 59.55 19.18 47.00 Q 23.20 27.58 47.00 24.31 Q 62.38 9.13 85.00 16.00 Z"
-            fill="#ECE192"
-          />
+      {/* Sticker ondulado tipo nube (fila de círculos), superpuesto en la esquina */}
+      <div className="absolute -top-5 -left-5 z-10 w-[164px] -rotate-6">
+        <svg viewBox="0 0 230 124" className="w-full h-auto drop-shadow-md">
+          <g fill="#ECE192">
+            <circle cx="46" cy="62" r="46" />
+            <circle cx="92" cy="62" r="46" />
+            <circle cx="138" cy="62" r="46" />
+            <circle cx="184" cy="62" r="46" />
+          </g>
           <text
-            x="85"
-            y="70"
+            x="115"
+            y="56"
             textAnchor="middle"
-            fontSize="20"
+            fontSize="19"
             fontWeight="700"
             fill="#274734"
             fontFamily="var(--font-jost), sans-serif"
@@ -52,26 +54,15 @@ export function SponsoredItemCard({
             ✦ Sugerido
           </text>
           <text
-            x="85"
-            y="92"
+            x="115"
+            y="78"
             textAnchor="middle"
             fontSize="13"
             fontWeight="600"
             fill="#274734"
             fontFamily="var(--font-jost), sans-serif"
           >
-            no está
-          </text>
-          <text
-            x="85"
-            y="108"
-            textAnchor="middle"
-            fontSize="13"
-            fontWeight="600"
-            fill="#274734"
-            fontFamily="var(--font-jost), sans-serif"
-          >
-            en tu lista
+            no está en tu lista
           </text>
         </svg>
       </div>
