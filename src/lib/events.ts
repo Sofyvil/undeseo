@@ -7,7 +7,7 @@ export const EVENTS = [
   { id: "quince", label: "15 años", image: "/icons/corona.png" },
   { id: "casamiento", label: "Casamiento", image: "/icons/anillos.png" },
   { id: "mudanza", label: "Casa nueva / Mudanza", image: "/icons/casa.png" },
-  { id: "graduacion", label: "Graduación / Recibida", emoji: "🎓" },
+  { id: "graduacion", label: "Graduación / Recibida", image: "/icons/graduacion.png" },
   { id: "otro", label: "Otro evento", image: "/icons/estrellas.png" },
 ];
 

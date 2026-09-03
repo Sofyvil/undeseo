@@ -59,18 +59,12 @@ export default async function CrearPage() {
                   defaultChecked={i === 0}
                   className="sr-only"
                 />
-                {ev.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={ev.image}
-                    alt=""
-                    className="w-6.5 h-6.5 mx-auto mb-1.5 object-contain"
-                  />
-                ) : (
-                  <span className="text-[1.4rem] block mb-1.5 leading-none">
-                    {ev.emoji}
-                  </span>
-                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={ev.image}
+                  alt=""
+                  className="w-6.5 h-6.5 mx-auto mb-1.5 object-contain"
+                />
                 <span>{ev.label}</span>
               </label>
             ))}
