@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { fetchLinkPreview, type LinkPreview } from "../../l/[id]/actions";
 
 // Chequeo de seguridad: solo el mail configurado en ADMIN_EMAIL puede
 // ejecutar estas acciones, sin importar qué mande el formulario.
@@ -17,9 +18,16 @@ async function assertIsAdmin() {
   }
 }
 
+// Reutiliza el mismo lector de links que ya usan los invitados para
+// agregar regalos (Mercado Libre oficial + lectura directa + Microlink).
+export async function fetchProductPreview(url: string): Promise<LinkPreview> {
+  await assertIsAdmin();
+  return fetchLinkPreview(url);
+}
+
 // Si viene un archivo de imagen en el form, lo sube al bucket
 // "sponsored-products" y devuelve la URL pública. Si no viene archivo,
-// devuelve null (y el que llama decide si usar el link pegado a mano).
+// devuelve null (y el que llama decide si usar el link pegado/autocompletado).
 async function maybeUploadImage(formData: FormData, admin: ReturnType<typeof createAdminClient>) {
   const file = formData.get("imageFile") as File | null;
   if (!file || file.size === 0) return null;
@@ -47,7 +55,7 @@ export async function addSponsoredProduct(formData: FormData) {
   const price = priceRaw ? Number(priceRaw) : null;
   const details = (formData.get("details") as string) || null;
   const productUrl = formData.get("productUrl") as string;
-  const eventType = (formData.get("eventType") as string) || null;
+  const eventTypes = formData.getAll("eventTypes") as string[];
 
   if (!brandName || !productName || !productUrl) return;
 
@@ -62,7 +70,7 @@ export async function addSponsoredProduct(formData: FormData) {
     details,
     image_url: imageUrl,
     product_url: productUrl,
-    event_type: eventType || null,
+    event_types: eventTypes,
     active: true,
   });
 
@@ -79,7 +87,7 @@ export async function editSponsoredProduct(id: string, formData: FormData) {
   const price = priceRaw ? Number(priceRaw) : null;
   const details = (formData.get("details") as string) || null;
   const productUrl = formData.get("productUrl") as string;
-  const eventType = (formData.get("eventType") as string) || null;
+  const eventTypes = formData.getAll("eventTypes") as string[];
 
   if (!brandName || !productName || !productUrl) return;
 
@@ -98,7 +106,7 @@ export async function editSponsoredProduct(id: string, formData: FormData) {
       details,
       ...(imageUrl ? { image_url: imageUrl } : {}),
       product_url: productUrl,
-      event_type: eventType || null,
+      event_types: eventTypes,
     })
     .eq("id", id);
 

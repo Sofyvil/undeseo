@@ -33,18 +33,18 @@ export function SponsoredItemCard({
 
   return (
     <div className="bg-white rounded-2xl border-2 border-rose p-2.5 relative">
-      {/* Sticker ondulado, superpuesto en la esquina */}
-      <div className="absolute -top-3 -left-3 z-10 w-[92px] -rotate-6">
-        <svg viewBox="0 0 170 56" className="w-full h-auto drop-shadow-sm">
+      {/* Sticker ondulado tipo nube, superpuesto en la esquina */}
+      <div className="absolute -top-4 -left-4 z-10 w-[150px] -rotate-6">
+        <svg viewBox="0 0 200 76" className="w-full h-auto drop-shadow-md">
           <path
-            d="M 85.00 8.00 Q 105.29 6.36 120.00 10.68 Q 140.44 12.16 145.62 18.00 Q 160.73 22.20 155.00 28.00 Q 160.73 33.80 145.62 38.00 Q 140.44 43.84 120.00 45.32 Q 105.29 49.64 85.00 48.00 Q 64.71 49.64 50.00 45.32 Q 29.56 43.84 24.38 38.00 Q 9.27 33.80 15.00 28.00 Q 9.27 22.20 24.38 18.00 Q 29.56 12.16 50.00 10.68 Q 64.71 6.36 85.00 8.00 Z"
+            d="M 100.00 8.00 Q 140.84 5.85 165.05 16.79 Q 198.60 24.68 192.00 38.00 Q 198.60 51.32 165.05 59.21 Q 140.84 70.15 100.00 68.00 Q 59.16 70.15 34.95 59.21 Q 1.40 51.32 8.00 38.00 Q 1.40 24.68 34.95 16.79 Q 59.16 5.85 100.00 8.00 Z"
             fill="#E1DAA9"
           />
           <text
-            x="85"
-            y="24"
+            x="100"
+            y="34"
             textAnchor="middle"
-            fontSize="11"
+            fontSize="16"
             fontWeight="700"
             fill="#274734"
             fontFamily="var(--font-jost), sans-serif"
@@ -52,10 +52,10 @@ export function SponsoredItemCard({
             ✦ Sugerido
           </text>
           <text
-            x="85"
-            y="38"
+            x="100"
+            y="52"
             textAnchor="middle"
-            fontSize="8.5"
+            fontSize="11"
             fontWeight="500"
             fill="#274734"
             fontFamily="var(--font-jost), sans-serif"

@@ -33,7 +33,10 @@ export default async function SugeridosPage({
     .eq("active", true);
 
   const products = (sponsoredProducts ?? []).filter(
-    (p) => p.event_type === list.event_type || !p.event_type
+    (p) =>
+      p.event_types?.includes(list.event_type) ||
+      !p.event_types ||
+      p.event_types.length === 0
   );
 
   return (

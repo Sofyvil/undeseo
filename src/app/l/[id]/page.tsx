@@ -85,9 +85,11 @@ export default async function ListPage({
 
     if (sponsoredProducts && sponsoredProducts.length > 0) {
       const forThisEvent = sponsoredProducts.filter(
-        (p) => p.event_type === list.event_type
+        (p) => p.event_types?.includes(list.event_type)
       );
-      const generic = sponsoredProducts.filter((p) => !p.event_type);
+      const generic = sponsoredProducts.filter(
+        (p) => !p.event_types || p.event_types.length === 0
+      );
       const pool = forThisEvent.length > 0 ? forThisEvent : generic;
       if (pool.length > 0) {
         sponsoredProduct = pool[pickRotatingIndex(pool.length)];
