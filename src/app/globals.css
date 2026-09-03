@@ -11,6 +11,8 @@
   --color-rose-dark: #C97F8C;
   --color-amber: #E1DAA9;
   --color-amber-dark: #C9BE86;
+  --color-blue: #B3CDF1;
+  --color-blue-dark: #8FADD9;
   --color-line: #E1D7C4;
   --color-white: #FFFFFF;
   --color-forest: #274734;
@@ -28,6 +30,8 @@
   --color-rose-dark: var(--color-rose-dark);
   --color-amber: var(--color-amber);
   --color-amber-dark: var(--color-amber-dark);
+  --color-blue: var(--color-blue);
+  --color-blue-dark: var(--color-blue-dark);
   --color-line: var(--color-line);
   --color-forest: var(--color-forest);
   --color-forest-dark: var(--color-forest-dark);

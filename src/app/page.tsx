@@ -8,16 +8,19 @@ const HOW_IT_WORKS = [
     icon: "list" as const,
     title: "Armás tu lista",
     desc: "Le ponés nombre a tu evento y sumás los regalos que querés recibir.",
+    bg: "bg-rose",
   },
   {
     icon: "share" as const,
     title: "Compartís el link",
     desc: "Por WhatsApp, a quien quieras. Tus invitados lo abren sin registrarse.",
+    bg: "bg-amber",
   },
   {
     icon: "gift" as const,
     title: "Cada uno reserva lo suyo",
     desc: "Eligen un regalo y lo marcan como propio. Nadie repite, nadie se cruza.",
+    bg: "bg-blue",
   },
 ];
 
@@ -41,7 +44,7 @@ export default async function Home() {
         ) : (
           <Link
             href="/login"
-            className="px-4 py-1.5 rounded-full border border-line bg-white text-[0.78rem] text-sage-dark font-semibold hover:bg-cream-2 transition-colors"
+            className="px-4 py-1.5 rounded-full bg-rose text-white text-[0.78rem] font-semibold hover:bg-rose-dark transition-colors"
           >
             Iniciar sesión
           </Link>
@@ -71,8 +74,8 @@ export default async function Home() {
       <div className="flex flex-col gap-4 my-7 md:grid md:grid-cols-3 md:gap-5">
         {HOW_IT_WORKS.map((step, i) => (
           <div key={step.title} className="flex gap-3.5 items-start md:flex-col md:gap-2.5">
-            <div className="w-10.5 h-10.5 shrink-0 rounded-xl bg-white border border-line flex items-center justify-center">
-              <Icon name={step.icon} className="w-5 h-5 text-sage-dark" />
+            <div className={`w-10.5 h-10.5 shrink-0 rounded-xl ${step.bg} flex items-center justify-center`}>
+              <Icon name={step.icon} className="w-5 h-5 text-ink" />
             </div>
             <div>
               <p className="font-mono-price text-[0.65rem] font-semibold tracking-[0.08em] uppercase text-sage-dark mb-0.5">
