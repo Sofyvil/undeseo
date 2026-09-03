@@ -35,16 +35,16 @@ export function SponsoredItemCard({
     <div className="bg-white rounded-2xl border-2 border-rose p-2.5 relative">
       {/* Sticker ondulado tipo nube, superpuesto en la esquina */}
       <div className="absolute -top-4 -left-4 z-10 w-[150px] -rotate-6">
-        <svg viewBox="0 0 200 76" className="w-full h-auto drop-shadow-md">
+        <svg viewBox="0 0 200 92" className="w-full h-auto drop-shadow-md">
           <path
-            d="M 100.00 8.00 Q 140.84 5.85 165.05 16.79 Q 198.60 24.68 192.00 38.00 Q 198.60 51.32 165.05 59.21 Q 140.84 70.15 100.00 68.00 Q 59.16 70.15 34.95 59.21 Q 1.40 51.32 8.00 38.00 Q 1.40 24.68 34.95 16.79 Q 59.16 5.85 100.00 8.00 Z"
-            fill="#E1DAA9"
+            d="M 100.00 6.00 Q 125.10 1.73 142.75 10.58 Q 169.55 11.87 175.71 23.28 Q 198.06 29.83 191.33 41.18 Q 204.12 51.50 186.02 60.18 Q 186.31 71.90 161.01 75.94 Q 148.74 86.38 122.02 84.84 Q 100.00 91.60 77.98 84.84 Q 51.26 86.38 38.99 75.94 Q 13.69 71.90 13.98 60.18 Q -4.12 51.50 8.67 41.18 Q 1.94 29.83 24.29 23.28 Q 30.45 11.87 57.25 10.58 Q 74.90 1.73 100.00 6.00 Z"
+            fill="#F3C94D"
           />
           <text
             x="100"
-            y="34"
+            y="42"
             textAnchor="middle"
-            fontSize="16"
+            fontSize="19"
             fontWeight="700"
             fill="#274734"
             fontFamily="var(--font-jost), sans-serif"
@@ -53,10 +53,10 @@ export function SponsoredItemCard({
           </text>
           <text
             x="100"
-            y="52"
+            y="63"
             textAnchor="middle"
-            fontSize="11"
-            fontWeight="500"
+            fontSize="15"
+            fontWeight="600"
             fill="#274734"
             fontFamily="var(--font-jost), sans-serif"
           >

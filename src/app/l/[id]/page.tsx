@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
-import { reserveItem, unreserveItem, deleteItem, updateEventDetails } from "./actions";
+import { reserveItem, unreserveItem, deleteItem, updateEventDetails, updateItem } from "./actions";
 import { notFound } from "next/navigation";
 import { AddItemForm } from "./AddItemForm";
 import { CopyLinkButton } from "./CopyLinkButton";
@@ -312,7 +312,7 @@ export default async function ListPage({
               </p>
             </div>
           </div>
-          <CopyLinkButton link={guestLink} />
+          <CopyLinkButton link={guestLink} eventName={list.parents_name} />
         </div>
       )}
 
@@ -430,11 +430,60 @@ export default async function ListPage({
               )}
 
               {isOwner && (
-                <form action={deleteItem.bind(null, id, item.id)} className="mt-1.5">
+                <form action={deleteItem.bind(null, id, item.id)} className="mt-1.5 inline-block mr-3">
                   <button className="text-[0.75rem] text-ink-soft underline">
                     Quitar
                   </button>
                 </form>
+              )}
+
+              {isOwner && (
+                <details className="mt-1.5 inline-block">
+                  <summary className="text-[0.75rem] text-sage-dark font-semibold underline cursor-pointer select-none inline">
+                    Editar
+                  </summary>
+                  <form
+                    action={updateItem.bind(null, id, item.id)}
+                    className="flex flex-col gap-2 mt-2.5 pt-2.5 border-t border-line"
+                  >
+                    <input
+                      name="name"
+                      required
+                      defaultValue={item.name}
+                      placeholder="Nombre del regalo"
+                      className="px-2.5 py-2 rounded-lg border border-line text-[0.78rem] outline-none focus:border-sage"
+                    />
+                    <input
+                      name="price"
+                      type="number"
+                      step="0.01"
+                      defaultValue={item.price ?? ""}
+                      placeholder="Precio"
+                      className="px-2.5 py-2 rounded-lg border border-line text-[0.78rem] outline-none focus:border-sage"
+                    />
+                    <input
+                      name="details"
+                      defaultValue={item.details ?? ""}
+                      placeholder="Detalle (talle, color, etc)"
+                      className="px-2.5 py-2 rounded-lg border border-line text-[0.78rem] outline-none focus:border-sage"
+                    />
+                    <input
+                      name="imageUrl"
+                      defaultValue={item.image_url ?? ""}
+                      placeholder="Link de la foto"
+                      className="px-2.5 py-2 rounded-lg border border-line text-[0.78rem] outline-none focus:border-sage"
+                    />
+                    <input
+                      name="productUrl"
+                      defaultValue={item.product_url ?? ""}
+                      placeholder="Link de la tienda"
+                      className="px-2.5 py-2 rounded-lg border border-line text-[0.78rem] outline-none focus:border-sage"
+                    />
+                    <button className="py-1.5 rounded-full bg-sage text-white font-semibold text-[0.78rem] hover:bg-sage-dark transition-colors">
+                      Guardar cambios
+                    </button>
+                  </form>
+                </details>
               )}
             </div>
           ))

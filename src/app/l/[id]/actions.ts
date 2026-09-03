@@ -29,6 +29,48 @@ export async function setFlyerImage(listId: string, url: string | null) {
   revalidatePath(`/l/${listId}`);
 }
 
+export async function updateItem(
+  listId: string,
+  itemId: string,
+  formData: FormData
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Solo el dueño de la lista puede editar sus regalos.
+  const { data: list } = await supabase
+    .from("lists")
+    .select("user_id")
+    .eq("id", listId)
+    .single();
+
+  if (!user || !list || user.id !== list.user_id) return;
+
+  const name = formData.get("name") as string;
+  const priceRaw = formData.get("price") as string;
+  const price = priceRaw ? Number(priceRaw) : null;
+  const details = (formData.get("details") as string) || null;
+  const productUrl = (formData.get("productUrl") as string) || null;
+  const imageUrl = (formData.get("imageUrl") as string) || null;
+
+  if (!name) return;
+
+  await supabase
+    .from("items")
+    .update({
+      name,
+      price,
+      details,
+      product_url: productUrl,
+      image_url: imageUrl,
+    })
+    .eq("id", itemId);
+
+  revalidatePath(`/l/${listId}`);
+}
+
 export async function addItem(
   listId: string,
   data: { name: string; price: number | null; details: string | null; productUrl: string | null; imageUrl: string | null; source: "link" | "catalog" }
