@@ -8,6 +8,7 @@ import { CopyLinkButton } from "./CopyLinkButton";
 import { FlyerUploader } from "./FlyerUploader";
 import { SponsoredItemCard } from "./SponsoredItemCard";
 import { signOut } from "../../mis-listas/actions";
+import { EVENT_LABELS } from "@/lib/events";
 
 function pickRotatingIndex(length: number) {
   // Al azar en cada carga de página, así no se ve siempre el mismo.
@@ -19,13 +20,6 @@ const CANVA_LINKS: Record<string, string> = {
   nacimiento: "https://www.canva.com/es_mx/invitaciones/plantillas/baby-shower/",
   cumple: "https://www.canva.com/es_mx/invitaciones/plantillas/cumpleanos/",
   otro: "https://www.canva.com/es_mx/invitaciones/plantillas/",
-};
-
-const EVENT_LABELS: Record<string, string> = {
-  baby_shower: "Baby shower",
-  nacimiento: "Nacimiento",
-  cumple: "Cumpleaños",
-  otro: "Otro evento",
 };
 
 function money(n: number | null) {
