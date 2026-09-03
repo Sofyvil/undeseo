@@ -34,17 +34,17 @@ export function SponsoredItemCard({
   return (
     <div className="bg-white rounded-2xl border-2 border-rose p-2.5 relative">
       {/* Sticker ondulado tipo nube (fila de círculos), superpuesto en la esquina */}
-      <div className="absolute -top-3 -left-3 z-10 w-[118px] -rotate-6">
-        <svg viewBox="0 0 144 66" className="w-full h-auto drop-shadow-md">
+      <div className="absolute -top-3 -left-3 z-10 w-[130px] -rotate-6">
+        <svg viewBox="0 0 117 54" className="w-full h-auto drop-shadow-md">
           <g fill="#ECE192">
-            <circle cx="30" cy="34" r="30" />
-            <circle cx="58" cy="34" r="30" />
-            <circle cx="86" cy="34" r="30" />
-            <circle cx="114" cy="34" r="30" />
+            <circle cx="24" cy="27" r="24" />
+            <circle cx="47" cy="27" r="24" />
+            <circle cx="70" cy="27" r="24" />
+            <circle cx="93" cy="27" r="24" />
           </g>
           <text
-            x="72"
-            y="30"
+            x="58"
+            y="24"
             textAnchor="middle"
             fontSize="11.5"
             fontWeight="700"
@@ -54,10 +54,10 @@ export function SponsoredItemCard({
             ✦ Sugerido
           </text>
           <text
-            x="72"
-            y="43"
+            x="58"
+            y="36"
             textAnchor="middle"
-            fontSize="8.2"
+            fontSize="8"
             fontWeight="600"
             fill="#274734"
             fontFamily="var(--font-jost), sans-serif"
