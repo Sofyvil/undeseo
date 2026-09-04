@@ -22,8 +22,13 @@ export default async function Image() {
           background: "#F7F2EB",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logoSrc} width={720} height={480} style={{ objectFit: "contain" }} />
+        <img
+          src={logoSrc}
+          alt="Un Deseo"
+          width={720}
+          height={480}
+          style={{ objectFit: "contain" }}
+        />
       </div>
     ),
     { ...size }
