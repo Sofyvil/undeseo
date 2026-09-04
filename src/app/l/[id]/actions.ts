@@ -73,7 +73,18 @@ export async function updateItem(
 
 export async function addItem(
   listId: string,
-  data: { name: string; price: number | null; details: string | null; productUrl: string | null; imageUrl: string | null; source: "link" | "catalog" }
+  data: {
+    name: string;
+    price: number | null;
+    details: string | null;
+    productUrl: string | null;
+    imageUrl: string | null;
+    source: "link" | "catalog";
+    // Estos dos son solo para la métrica de abajo — no se guardan en la
+    // tabla items, la tabla no tiene esas columnas.
+    brandName?: string;
+    category?: string;
+  }
 ) {
   const supabase = await createClient();
 
@@ -87,6 +98,15 @@ export async function addItem(
     product_url: data.productUrl,
     image_url: data.imageUrl,
     source: data.source,
+  });
+
+  await trackServer(listId, "producto_agregado", {
+    listId,
+    source: data.source,
+    name: data.name,
+    price: data.price,
+    brand: data.brandName ?? null,
+    category: data.category ?? null,
   });
 
   revalidatePath(`/l/${listId}`);

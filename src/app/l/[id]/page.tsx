@@ -9,6 +9,7 @@ import { FlyerUploader } from "./FlyerUploader";
 import { SponsoredItemCard } from "./SponsoredItemCard";
 import { signOut } from "../../mis-listas/actions";
 import { EVENT_LABELS } from "@/lib/events";
+import { trackServer } from "@/lib/analytics-server";
 
 function pickRotatingIndex(length: number) {
   // Al azar en cada carga de página, así no se ve siempre el mismo.
@@ -59,6 +60,13 @@ export default async function ListPage({
   if (!list) notFound();
 
   const isOwner = !!user && user.id === list.user_id;
+
+  if (!isOwner) {
+    await trackServer(user?.id ?? "invitado_anonimo", "invitado_visito_lista", {
+      listId: id,
+      eventType: list.event_type,
+    });
+  }
 
   const { data: items } = await supabase
     .from("items")

@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect } from "react";
 import { addItem } from "./actions";
+import { track } from "@/lib/analytics";
 
 type SponsoredProductRow = {
   id: string;
@@ -8,6 +12,7 @@ type SponsoredProductRow = {
   details: string | null;
   image_url: string | null;
   product_url: string;
+  event_types?: string[] | null;
 };
 
 function money(n: number | null) {
@@ -22,6 +27,29 @@ export function SponsoredItemCard({
   listId: string;
   product: SponsoredProductRow;
 }) {
+  const category =
+    product.event_types && product.event_types.length > 0
+      ? product.event_types.join(",")
+      : "todos";
+
+  const trackingProps = {
+    listId,
+    productId: product.id,
+    brand: product.brand_name,
+    category,
+    productName: product.product_name,
+  };
+
+  // Impresión: se dispara una vez, cuando la tarjeta aparece en pantalla.
+  useEffect(() => {
+    track("sugerido_impresion", trackingProps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.id]);
+
+  const handleClickToStore = () => {
+    track("sugerido_click", trackingProps);
+  };
+
   const addThisItem = addItem.bind(null, listId, {
     name: product.product_name,
     price: product.price,
@@ -29,6 +57,8 @@ export function SponsoredItemCard({
     productUrl: product.product_url,
     imageUrl: product.image_url,
     source: "catalog" as const,
+    brandName: product.brand_name,
+    category,
   });
 
   return (
@@ -70,6 +100,7 @@ export function SponsoredItemCard({
       <a
         href={product.product_url}
         target="_blank"
+        onClick={handleClickToStore}
         className="w-full aspect-square rounded-xl bg-cream-2 flex items-center justify-center overflow-hidden mb-2.5 block"
       >
         {product.image_url ? (
@@ -85,7 +116,7 @@ export function SponsoredItemCard({
         )}
       </a>
 
-      <a href={product.product_url} target="_blank" className="block">
+      <a href={product.product_url} target="_blank" onClick={handleClickToStore} className="block">
         <p className="font-semibold text-[0.88rem] leading-snug mb-0.5">
           {product.product_name}
         </p>
