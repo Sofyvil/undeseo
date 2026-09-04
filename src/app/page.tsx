@@ -104,7 +104,7 @@ export default async function Home() {
       <footer className="mt-10 text-center pt-4.5 border-t-2 border-dashed border-line text-[0.78rem] text-ink-soft">
         <div className="flex items-center justify-center gap-3">
           <span className="flex items-center gap-1.5">
-            <Icon name="gift" className="w-3.5 h-3.5 text-sage-dark" />
+            <Image src="/icon-gift.png" alt="" width={14} height={14} />
             Un Deseo
           </span>
           <span className="text-line">·</span>
