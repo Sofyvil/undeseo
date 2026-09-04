@@ -8,11 +8,16 @@ import Image from "next/image";
 function LoginForm() {
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "/mis-listas";
+  const callbackFailed = searchParams.get("error") === "auth";
 
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    callbackFailed
+      ? "Ese link ya no es válido. Puede ser porque se abrió en un navegador distinto al que lo pediste, o porque ya venció. Pedí uno nuevo abajo y abrilo desde el mismo navegador."
+      : null
+  );
 
   async function handleGoogle() {
     const supabase = createClient();
