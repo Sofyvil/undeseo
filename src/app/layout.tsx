@@ -23,9 +23,24 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://undeseo.com.ar"),
   title: "Un Deseo — Listas de regalos",
   description:
     "Armá tu lista de regalos para baby shower, nacimiento y otros festejos. Gratis, sin vueltas, y sin repetir regalos.",
+  openGraph: {
+    title: "Un Deseo — Listas de regalos",
+    description:
+      "Armá tu lista de regalos para baby shower, nacimiento y otros festejos. Gratis, sin vueltas, y sin repetir regalos.",
+    siteName: "Un Deseo",
+    locale: "es_AR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Un Deseo — Listas de regalos",
+    description:
+      "Armá tu lista de regalos para baby shower, nacimiento y otros festejos. Gratis, sin vueltas, y sin repetir regalos.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
