@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "@/components/Icon";
+import { SubmitButton } from "@/components/SubmitButton";
 import Image from "next/image";
 import Link from "next/link";
 import { reserveItem, unreserveItem, deleteItem, updateEventDetails, updateItem } from "./actions";
@@ -282,12 +283,13 @@ export default async function ListPage({
                 className="w-full px-3 py-2 rounded-lg border border-line outline-none focus:border-sage text-[0.85rem]"
               />
             </div>
-            <button
-              type="submit"
-              className="mt-1 py-2 rounded-full bg-sage text-white font-semibold text-[0.8rem] hover:bg-sage-dark transition-colors"
+            <SubmitButton
+              pendingText="Guardando…"
+              successText="¡Guardado! ✓"
+              className="mt-1 py-2 rounded-full bg-sage text-white font-semibold text-[0.8rem] hover:bg-sage-dark transition-colors disabled:opacity-70"
             >
               Guardar
-            </button>
+            </SubmitButton>
           </form>
 
           {/* Columna derecha: invitación */}
@@ -406,9 +408,12 @@ export default async function ListPage({
                   </p>
                   {!isOwner && (
                     <form action={unreserveItem.bind(null, id, item.id)}>
-                      <button className="text-[0.75rem] text-ink-soft underline mt-1">
+                      <SubmitButton
+                        pendingText="Deshaciendo…"
+                        className="text-[0.75rem] text-ink-soft underline mt-1 disabled:opacity-60"
+                      >
                         ¿Te equivocaste? Deshacer
-                      </button>
+                      </SubmitButton>
                     </form>
                   )}
                 </>
@@ -431,18 +436,24 @@ export default async function ListPage({
                       required
                       className="px-2.5 py-1.5 rounded-lg border border-line text-[0.78rem] outline-none focus:border-sage"
                     />
-                    <button className="py-1.5 rounded-full bg-rose text-white font-semibold text-[0.78rem] hover:bg-rose-dark transition-colors">
+                    <SubmitButton
+                      pendingText="Reservando…"
+                      className="py-1.5 rounded-full bg-rose text-white font-semibold text-[0.78rem] hover:bg-rose-dark transition-colors disabled:opacity-70"
+                    >
                       Lo regalo yo 🎁
-                    </button>
+                    </SubmitButton>
                   </form>
                 )
               )}
 
               {isOwner && (
                 <form action={deleteItem.bind(null, id, item.id)} className="mt-1.5 inline-block mr-3">
-                  <button className="text-[0.75rem] text-ink-soft underline">
+                  <SubmitButton
+                    pendingText="Quitando…"
+                    className="text-[0.75rem] text-ink-soft underline disabled:opacity-60"
+                  >
                     Quitar
-                  </button>
+                  </SubmitButton>
                 </form>
               )}
 
@@ -488,9 +499,13 @@ export default async function ListPage({
                       placeholder="Link de la tienda"
                       className="px-2.5 py-2 rounded-lg border border-line text-[0.78rem] outline-none focus:border-sage"
                     />
-                    <button className="py-1.5 rounded-full bg-sage text-white font-semibold text-[0.78rem] hover:bg-sage-dark transition-colors">
+                    <SubmitButton
+                      pendingText="Guardando…"
+                      successText="¡Guardado! ✓"
+                      className="py-1.5 rounded-full bg-sage text-white font-semibold text-[0.78rem] hover:bg-sage-dark transition-colors disabled:opacity-70"
+                    >
                       Guardar cambios
-                    </button>
+                    </SubmitButton>
                   </form>
                 </details>
               )}

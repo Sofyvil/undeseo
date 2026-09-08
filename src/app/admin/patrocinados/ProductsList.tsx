@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { EVENTS, EVENT_LABELS } from "@/lib/events";
+import { SubmitButton } from "@/components/SubmitButton";
 import {
   editSponsoredProduct,
   toggleSponsoredProduct,
@@ -97,14 +98,21 @@ export function SponsoredProductsList({
                 </p>
               </div>
               <form action={toggleSponsoredProduct.bind(null, p.id, !p.active)}>
-                <button className="text-[0.75rem] font-semibold text-sage-dark underline shrink-0">
+                <SubmitButton
+                  pendingText="…"
+                  successText={p.active ? "Pausado ✓" : "Activado ✓"}
+                  className="text-[0.75rem] font-semibold text-sage-dark underline shrink-0 disabled:opacity-60"
+                >
                   {p.active ? "Pausar" : "Activar"}
-                </button>
+                </SubmitButton>
               </form>
               <form action={deleteSponsoredProduct.bind(null, p.id)}>
-                <button className="text-[0.75rem] text-rose-dark underline shrink-0">
+                <SubmitButton
+                  pendingText="Borrando…"
+                  className="text-[0.75rem] text-rose-dark underline shrink-0 disabled:opacity-60"
+                >
                   Borrar
-                </button>
+                </SubmitButton>
               </form>
             </div>
 
@@ -211,12 +219,13 @@ export function SponsoredProductsList({
                     ))}
                   </div>
                 </fieldset>
-                <button
-                  type="submit"
-                  className="py-2 rounded-full bg-sage text-white font-semibold text-[0.8rem] hover:bg-sage-dark transition-colors"
+                <SubmitButton
+                  pendingText="Guardando…"
+                  successText="¡Guardado! ✓"
+                  className="py-2 rounded-full bg-sage text-white font-semibold text-[0.8rem] hover:bg-sage-dark transition-colors disabled:opacity-70"
                 >
                   Guardar cambios
-                </button>
+                </SubmitButton>
               </form>
             </details>
           </div>
