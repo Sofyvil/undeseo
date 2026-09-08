@@ -75,7 +75,11 @@ export default async function Home() {
         {HOW_IT_WORKS.map((step, i) => (
           <div key={step.title} className="flex gap-3.5 items-start md:flex-col md:gap-2.5">
             <div className={`w-10.5 h-10.5 shrink-0 rounded-xl ${step.bg} flex items-center justify-center`}>
-              <Icon name={step.icon} className="w-5 h-5 text-ink" />
+              {step.icon === "gift" ? (
+                <Image src="/icon-gift.png" alt="" width={22} height={22} />
+              ) : (
+                <Icon name={step.icon} className="w-5 h-5 text-ink" />
+              )}
             </div>
             <div>
               <p className="font-mono-price text-[0.65rem] font-semibold tracking-[0.08em] uppercase text-sage-dark mb-0.5">
