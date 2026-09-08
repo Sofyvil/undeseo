@@ -57,17 +57,17 @@ function LoginForm() {
           <Image
             src="/sticker-guests-wish.png"
             alt=""
-            width={618}
-            height={491}
+            width={603}
+            height={404}
             className="h-[150px] md:h-[170px] w-auto"
           />
-          <div
-            className="w-[92px] md:w-[105px] aspect-[290/400] shrink-0 rounded-[48%_52%_45%_55%/58%_42%_58%_42%] bg-forest flex items-center justify-center px-2 rotate-3 shadow-md"
-          >
-            <p className="font-script text-cream text-[1.2rem] md:text-[1.35rem] leading-[1.05] text-center">
-              armá tu lista en un minuto
-            </p>
-          </div>
+          <Image
+            src="/sticker-arma-lista.png"
+            alt=""
+            width={929}
+            height={1066}
+            className="h-[150px] md:h-[170px] w-auto"
+          />
         </div>
         <p className="font-display text-xl font-semibold text-ink">
           Entrá a Un Deseo para crear y guardar tus listas.

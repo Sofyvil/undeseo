@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Jost, IBM_Plex_Mono, Caveat } from "next/font/google";
+import { Fraunces, Jost, IBM_Plex_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import "./globals.css";
@@ -20,13 +20,6 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
   weight: ["500", "600"],
-});
-
-// Provisorio: reemplazar por la fuente "Machiato" cuando se confirme la licencia comercial.
-const caveat = Caveat({
-  variable: "--font-caveat",
-  subsets: ["latin"],
-  weight: ["700"],
 });
 
 export const metadata: Metadata = {
@@ -54,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${fraunces.variable} ${jost.variable} ${ibmPlexMono.variable} ${caveat.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${jost.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body">
         <PostHogProvider>{children}</PostHogProvider>
