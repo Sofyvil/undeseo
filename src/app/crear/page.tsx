@@ -23,15 +23,8 @@ export default async function CrearPage() {
           </button>
         </form>
 
-        <div className="relative inline-block">
-          <Image
-            src="/logo.png"
-            alt="Un Deseo"
-            width={1200}
-            height={800}
-            className="h-20 md:h-24 w-auto mx-auto"
-          />
-          <div className="absolute -top-2 -right-9 md:-right-12 w-[92px] rotate-6">
+        <div className="flex items-center justify-center gap-4 md:gap-6">
+          <div className="w-[92px] shrink-0 -rotate-6">
             <svg viewBox="0 0 102 50" className="w-full h-auto drop-shadow-md">
               <g fill="#E7A2AC">
                 <circle cx="18" cy="25" r="18" />
@@ -63,6 +56,13 @@ export default async function CrearPage() {
               </text>
             </svg>
           </div>
+          <Image
+            src="/logo-wordmark.png"
+            alt="Un Deseo"
+            width={1200}
+            height={545}
+            className="h-24 md:h-28 w-auto"
+          />
         </div>
 
         <h1 className="font-display text-3xl font-bold text-ink mt-3">
