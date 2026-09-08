@@ -23,47 +23,13 @@ export default async function CrearPage() {
           </button>
         </form>
 
-        <div className="flex items-center justify-center gap-4 md:gap-6">
-          <div className="w-[92px] shrink-0 -rotate-6">
-            <svg viewBox="0 0 102 50" className="w-full h-auto drop-shadow-md">
-              <g fill="#E7A2AC">
-                <circle cx="18" cy="25" r="18" />
-                <circle cx="40" cy="25" r="18" />
-                <circle cx="62" cy="25" r="18" />
-                <circle cx="84" cy="25" r="18" />
-              </g>
-              <text
-                x="51"
-                y="22"
-                textAnchor="middle"
-                fontSize="11.5"
-                fontWeight="700"
-                fill="#274734"
-                fontFamily="var(--font-jost), sans-serif"
-              >
-                ✦ ¡Vamos!
-              </text>
-              <text
-                x="51"
-                y="34"
-                textAnchor="middle"
-                fontSize="8"
-                fontWeight="600"
-                fill="#274734"
-                fontFamily="var(--font-jost), sans-serif"
-              >
-                armá tu lista
-              </text>
-            </svg>
-          </div>
-          <Image
-            src="/logo-wordmark.png"
-            alt="Un Deseo"
-            width={1200}
-            height={545}
-            className="h-24 md:h-28 w-auto"
-          />
-        </div>
+        <Image
+          src="/logo-wordmark.png"
+          alt="Un Deseo"
+          width={1200}
+          height={545}
+          className="h-24 md:h-28 w-auto mx-auto"
+        />
 
         <h1 className="font-display text-3xl font-bold text-ink mt-3">
           Armá tu lista
