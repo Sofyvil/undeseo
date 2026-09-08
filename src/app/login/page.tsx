@@ -53,22 +53,13 @@ function LoginForm() {
   return (
     <main className="max-w-md mx-auto w-full px-5 py-14">
       <div className="text-center mb-8">
-        <div className="flex items-center justify-center gap-1.5 mb-5">
-          <Image
-            src="/sticker-guests-wish.png"
-            alt=""
-            width={603}
-            height={404}
-            className="h-[150px] md:h-[170px] w-auto"
-          />
-          <Image
-            src="/sticker-arma-lista.png"
-            alt=""
-            width={929}
-            height={1066}
-            className="h-[150px] md:h-[170px] w-auto"
-          />
-        </div>
+        <Image
+          src="/stickers-login.png"
+          alt=""
+          width={1400}
+          height={654}
+          className="h-[150px] md:h-[170px] w-auto mx-auto mb-5"
+        />
         <p className="font-display text-xl font-semibold text-ink">
           Entrá a Un Deseo para crear y guardar tus listas.
         </p>
