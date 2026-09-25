@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { AddItemForm } from "./AddItemForm";
 import { CopyLinkButton } from "./CopyLinkButton";
 import { FlyerUploader } from "./FlyerUploader";
+import { ReservedItemGuard } from "./ReservedItemGuard";
 import { SponsoredItemCard } from "./SponsoredItemCard";
 import { signOut } from "../../mis-listas/actions";
 import { EVENT_LABELS } from "@/lib/events";
@@ -75,6 +76,9 @@ export default async function ListPage({
     .select("*")
     .eq("list_id", id)
     .order("created_at", { ascending: false });
+
+  // Un invitado que toca un regalo ya reservado ve un aviso en vez de ir a la tienda.
+  const guestSeesReserved = (reserved: boolean | null) => !!reserved && !isOwner;
 
   const total = items?.length ?? 0;
   const reservedCount = items?.filter((i) => i.reserved).length ?? 0;
@@ -345,13 +349,20 @@ export default async function ListPage({
           </div>
         ) : (
           items!.map((item) => (
-            <div
+            <ReservedItemGuard
               key={item.id}
+              enabled={guestSeesReserved(item.reserved)}
+              productUrl={item.product_url}
               className={`bg-white rounded-2xl border-2 border-dashed border-line p-2.5 relative ${
                 item.reserved ? "opacity-60" : ""
               }`}
             >
-              <div className="w-full aspect-square rounded-xl bg-cream-2 flex items-center justify-center overflow-hidden mb-2.5">
+              <div
+                data-reserved-trigger={guestSeesReserved(item.reserved) ? "" : undefined}
+                className={`w-full aspect-square rounded-xl bg-cream-2 flex items-center justify-center overflow-hidden mb-2.5 ${
+                  guestSeesReserved(item.reserved) ? "cursor-pointer" : ""
+                }`}
+              >
                 {item.image_url ? (
                   item.product_url ? (
                     <a href={item.product_url} target="_blank" className="w-full h-full block">
@@ -376,7 +387,12 @@ export default async function ListPage({
                   <Icon name="gift" className="w-9 h-9 text-sage-dark" />
                 )}
               </div>
-              <p className="font-semibold text-[0.88rem] leading-snug mb-0.5">
+              <p
+                data-reserved-trigger={guestSeesReserved(item.reserved) ? "" : undefined}
+                className={`font-semibold text-[0.88rem] leading-snug mb-0.5 ${
+                  guestSeesReserved(item.reserved) ? "cursor-pointer" : ""
+                }`}
+              >
                 {item.name}
               </p>
               {item.details && (
@@ -395,6 +411,7 @@ export default async function ListPage({
                 <a
                   href={item.product_url}
                   target="_blank"
+                  data-reserved-trigger={guestSeesReserved(item.reserved) ? "" : undefined}
                   className="block text-[0.78rem] text-ink-soft underline mt-1.5"
                 >
                   Ver producto ↗
@@ -509,7 +526,7 @@ export default async function ListPage({
                   </form>
                 </details>
               )}
-            </div>
+            </ReservedItemGuard>
           ))
         )}
       </div>
